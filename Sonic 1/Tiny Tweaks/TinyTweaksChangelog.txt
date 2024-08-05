@@ -1,13 +1,14 @@
 Changelog:
 	- Most S3K Black has been removed from several sprites
 	- CD styled walk for Sonic (Suggested by Sonic De Glitcher)
+	- Restored Sonic's skidding animation from Sonic 1 (it was originally from Sonic CD)
 	- Removed Sonic's "flesh shoes"
+	- Added Tails' tails to his balance animation (as well as tweaked it a bit)
 	- Amy's colors have been corrected (Suggested by Nabbup)
 	- Amy's hammer rush animation has been tweaked to be not janky
-	- The hud display has been changed to be similar to Mania's hud (Inspired by Keingz's A.I.R. HUD Tweaks)
-	- Touched up life names and numbers (also inspired by Keingz's A.I.R. HUD Tweaks)
+	- The hud display has been changed to be similar to Mania's hud and touched up life names and numbers (Inspired by Keingz's A.I.R. HUD Tweaks)
 	- Touched up Amy's life icon colors
-	- Ovals behind the Score and Bonus tallys have been corrected to be similar to the title colors
+	- Ovals behind the Score and Bonus tallys have been corrected to be similar to the title card oval colors
 	- "Act" incorrect greys on the title cards have been corrected
 	- Tweaked up special stage life icons
 	- "Goal" blocks in the special stages have been changed to a "!" (Suggested by MattDrawzStuff)
