@@ -136,6 +136,7 @@ private alias 3 : TRACK_CONTINUE
 private alias 4 : TRACK_BOSS
 private alias 5 : TRACK_GAMEOVER
 private alias 6 : TRACK_DROWNING
+private alias 7 : TRACK_SUPER
 
 // This isn't a global variable, so let's fake it here - it's an unused (and broken) animation, left over from Sonic Nexus
 private alias 34 : ANI_CORKSCREW_V
@@ -491,6 +492,7 @@ end table
 
 public table Player_AmySuperPal
 	0xB44890, 0xFC6CFC, 0xFCB4FC, 0x6C0048, 0x90246C
+	0xD468B0, 0xFC8CFC, 0xFCD4FC, 0x8C2068, 0xB0448C
 	0xF488D0, 0xFCACFC, 0xFCE4FC, 0xAC4088, 0xD064AC
 	0xF4A8F0, 0xFCCCFC, 0xFCE4FC, 0xCC60A8, 0xF084CC
 	0xF4C8F0, 0xFCECFC, 0xFCE4FC, 0xEC80C8, 0xF0A4EC
@@ -504,6 +506,7 @@ end table
 
 public table Player_AmySuperAltPal
 	0xB44890, 0xFC6CFC, 0xFCB4FC, 0x6C0048, 0x90246C
+	0xD468B0, 0xFC8CFC, 0xFCD4FC, 0x8C2068, 0xB0448C
 	0xF488D0, 0xFCACFC, 0xFCE4FC, 0xAC4088, 0xD064AC
 	0xF4A8F0, 0xFCCCFC, 0xFCE4FC, 0xCC60A8, 0xF084CC
 	0xF4C8F0, 0xFCECFC, 0xFCE4FC, 0xEC80C8, 0xF0A4EC
@@ -882,7 +885,7 @@ public function Player_HandleSuperPalette_Amy
 			Player_superBlendTimer = 5
 			Player_superBlendClr += 5
 			if Player_superBlendClr >= 50
-				Player_superBlendClr = 0
+				Player_superBlendClr = 10
 			end if
 		end if
 	else
@@ -1070,7 +1073,7 @@ public function Player_HandleSuperForm
 			LoadAnimation("Sonic.ani")
 		end if
 
-		if music.currentTrack == TRACK_INVINCIBLE
+		if music.currentTrack == TRACK_SUPER
 			PlayMusic(0)
 		end if
 
@@ -1606,7 +1609,6 @@ end function
 public function Player_ProcessUpdate
 	if options.attractMode == false
 		if player.controlMode == CONTROLMODE_P1
-#platform: USE_STANDALONE
 			CheckTouchRect(0, 96, screen.xcenter, screen.ysize)
 
 			if checkResult > -1
@@ -1674,6 +1676,8 @@ public function Player_ProcessUpdate
 				PlaySfx(SfxName[Menu Back], false)
 				StopSfx(SfxName[Flying])
 				StopSfx(SfxName[Jump])
+				StopSfx(SfxName[Charge])
+				StopSfx(SfxName[Release])
 				engine.state = 5
 			end if
 
@@ -1682,16 +1686,10 @@ public function Player_ProcessUpdate
 				PlaySfx(SfxName[Menu Back], false)
 				StopSfx(SfxName[Flying])
 				StopSfx(SfxName[Jump])
+				StopSfx(SfxName[Charge])
+				StopSfx(SfxName[Release])
 				engine.state = 5
 			end if
-#endplatform
-
-#platform: USE_ORIGINS
-			if keyPress[1].start == true
-				engine.state = 5
-			end if
-#endplatform
-		end if
 
 		ProcessObjectControl()
 	else
@@ -2546,7 +2544,7 @@ public function Player_TryTransform
 		object[arrayPos0].priority = PRIORITY_ACTIVE
 
 		PlaySfx(SfxName[Transform], false)
-		PlayMusic(2) // Invincibility music
+		PlayMusic(TRACK_SUPER)
 		Player_superState = SUPERSTATE_SUPER
 		player[currentPlayer].invincibleTimer = 60
 		player[currentPlayer].blinkTimer = 0
@@ -6028,7 +6026,6 @@ event ObjectStartup
 			LoadAnimation("Amy.ani")
 			CallFunction(Player_HandleSuperPalette_Amy)
 			player[SLOT_PLAYER1].character 	= PLAYER_AMY
-			player[SLOT_PLAYER1].jumpOffset 	= -4
 			player[SLOT_PLAYER1].jumpAbility 	= Player_Action_DblJumpAmy
 			ANI_PEELOUT 			= ANI_RUNNING
 			break
