@@ -1,0 +1,1818 @@
+// ----------------------------------
+// RSDK Project: Sonic MR
+// Script Description: Save Menu
+// Script Author: Leonx254
+// ----------------------------------
+
+//-------Aliases-------//
+
+// Function declarations
+
+private alias object.value15 : object.xOffset
+private alias object.value22 : object.yOffset
+private alias object.value23 : object.savedChar
+private alias object.value24 : object.savedZone
+private alias object.value25 : object.savedEmeralds
+private alias object.value26 : object.bonusSetting
+private alias object.value30 : Save.KnownZone
+private alias object.value31 : object.savedSpecial
+private alias object.value32 : object.emeraldBit
+private alias object.value33 : object.maxEmeralds
+private alias object.value34 : object.emeraldFrame
+private alias object.value35 : object.rectG
+
+
+private alias 0 : SUBMENU_SAVESELECT
+private alias 1 : SUBMENU_PLAYERSELECT
+private alias 2 : SUBMENU_EXTRASELECT
+private alias 3 : SUBMENU_OPTIONSELECT
+private alias 4 : SUBMENU_PLAYERSELECT_ALT
+
+reserve function SaveMenu_SetStageLoad
+reserve function SaveMenu_SetStageAct
+reserve function SaveMenu_TouchFunction
+
+private function SaveMenu_TouchFunction
+	switch object.state
+	case SUBMENU_SAVESELECT
+	case SUBMENU_EXTRASELECT
+		object.touchPosVal  = screen.xsize
+		object.touchPosVal /= 3
+		Touch.X1Pos = object.touchPosVal
+		Touch.X2Pos = screen.xsize
+		if screen.xsize == 320
+			Touch.X1Pos = 55
+		end if
+
+		temp0 = 10
+		temp1 = 43
+		temp2 = 0
+		while temp0 < 213
+			CheckTouchRect(Touch.X1Pos, temp0, Touch.X2Pos, temp1)
+			if checkResult > -1
+				object[arrayPos5].inputReset       = true
+				object[arrayPos5].currentselection = temp2
+				keyPress[0].start = true
+			end if
+			temp2++
+			temp0 += 42
+			temp1 += 42
+		loop
+
+		if object[arrayPos5].state != MAINMENU_EXTRAS
+			object.touchPosVal  = screen.xsize
+			object.touchPosVal -= 200
+			Touch.X1Pos = object.touchPosVal
+			object.touchPosVal += 120
+			Touch.X2Pos = object.touchPosVal
+			CheckTouchRect(Touch.X1Pos, 212, Touch.X2Pos, 234)
+			if checkResult > -1
+				object[arrayPos5].inputReset       = true
+				object[arrayPos5].currentselection = 5
+				keyPress[0].start = true
+			end if
+		end if
+
+		CheckTouchRect(10, 170, 58, 218)
+		if checkResult > -1
+			object[arrayPos5].inputReset = true
+			keyPress[0].buttonB = true
+		end if
+		break
+
+	case SUBMENU_PLAYERSELECT
+		if object[arrayPos5].customCharToggle == false
+			//Select Sonic
+			object.touchPosVal = screen.xcenter
+			object.touchPosVal -= 199
+			Touch.X2Pos  = object.touchPosVal
+			Touch.X2Pos += 128
+			Touch.X1Pos  = object.touchPosVal
+			CheckTouchRect(Touch.X1Pos, 20, Touch.X2Pos, 148)
+			if checkResult > -1
+				object[arrayPos5].selectedChar = 0
+				object[arrayPos5].charPairing  = 0
+				keyPress[0].start = true
+			end if
+			//Select Tails
+			Touch.X1Pos  = Touch.X2Pos
+			Touch.X1Pos += 10
+			Touch.X2Pos += 136
+			CheckTouchRect(Touch.X1Pos, 60, Touch.X2Pos, 188)
+			if checkResult > -1
+				object[arrayPos5].selectedChar = 1
+				object[arrayPos5].charPairing  = 0
+				keyPress[0].start = true
+			end if
+			// Custom Char
+			CheckTouchRect(Touch.X1Pos, 30, Touch.X2Pos, 50)
+			if checkResult > -1
+				object[arrayPos5].customCharToggle = true
+				object[arrayPos5].selectedChar = 4
+				object[arrayPos5].charPairing  = 0
+				PlaySfx(SfxName[Menu Select], 0)
+			end if
+			//Select Knuckles
+			Touch.X1Pos = Touch.X2Pos
+			Touch.X1Pos += 10
+			if Screen.xsize == 320
+				Touch.X2Pos += 80
+				CheckTouchRect(Touch.X1Pos, 20, Touch.X2Pos, 104)
+			else
+				Touch.X2Pos += 136
+				CheckTouchRect(Touch.X1Pos, 20, Touch.X2Pos, 148)
+			end if
+			if checkResult > -1
+				object[arrayPos5].selectedChar = 2
+				object[arrayPos5].charPairing  = 0
+				keyPress[0].start = true
+			end if
+			// Custom Char
+			CheckTouchRect(Touch.X1Pos, 190, Touch.X2Pos, 220)
+			if checkResult > -1
+				keyPress[0].buttonZ = true
+				PlaySfx(SfxName[Menu Select], 0)
+			end if
+			//Pairing
+			object.touchPosVal = screen.xcenter
+			object.touchPosVal -= 150
+			Touch.X1Pos  = object.touchPosVal
+			Touch.X2Pos  = Touch.X1Pos
+			Touch.X2Pos += 32
+			CheckTouchRect(Touch.X1Pos, 186, Touch.X2Pos, 218)
+			if checkResult > -1
+				object[arrayPos5].selectedChar = 0
+				object[arrayPos5].charPairing  = 1
+				keyPress[0].start = true
+			end if
+			CheckTouchRect(10, 170, 58, 218)	//Back
+			if checkResult > -1
+				object[arrayPos5].inputReset = true
+				keyPress[0].buttonB = true
+			end if
+		else
+			CheckTouchRect(10, 170, 58, 218)	//Back
+			if checkResult > -1
+				object[arrayPos5].inputReset = true
+				keyPress[0].buttonB = true
+			end if
+
+			Touch.X1Pos  = screen.xcenter
+			Touch.X2Pos  = screen.xcenter
+			Touch.X2Pos += 38
+			CheckTouchRect(Touch.X1Pos, 200, Touch.X2Pos, 218)//Up
+			if checkResult > -1
+				object[arrayPos5].inputReset = true
+				keyPress[0].up = true
+				PlaySfx(SfxName[Menu Move], 0)
+			end if
+
+			Touch.X1Pos += 50
+			Touch.X2Pos += 50
+			CheckTouchRect(Touch.X1Pos, 200, Touch.X2Pos, 218)//Up
+			if checkResult > -1
+				object[arrayPos5].inputReset = true
+				PlaySfx(SfxName[Menu Select], 0)
+				keyPress[0].start = true
+			end if
+
+			Touch.X1Pos += 50
+			Touch.X2Pos += 50
+			CheckTouchRect(Touch.X1Pos, 200, Touch.X2Pos, 218)//Up
+			if checkResult > -1
+				object[arrayPos5].inputReset = true
+				keyPress[0].down = true
+				PlaySfx(SfxName[Menu Move], 0)
+			end if
+		end if
+		break
+
+	case SUBMENU_PLAYERSELECT_ALT
+		CheckTouchRect(10, 170, 58, 218)	//Back
+		if checkResult > -1
+			object[arrayPos5].inputReset = true
+			keyPress[0].buttonB = true
+			PlaySfx(SfxName[Menu Back], 0)
+		end if
+
+		Touch.X1Pos  = screen.xcenter
+		Touch.X2Pos  = screen.xcenter
+		Touch.X2Pos += 38
+		CheckTouchRect(Touch.X1Pos, 200, Touch.X2Pos, 218)//Up
+		if checkResult > -1
+			object[arrayPos5].inputReset = true
+			keyPress[0].up = true
+			PlaySfx(SfxName[Menu Move], 0)
+		end if
+
+		Touch.X1Pos += 50
+		Touch.X2Pos += 50
+		CheckTouchRect(Touch.X1Pos, 200, Touch.X2Pos, 218)//start
+		if checkResult > -1
+			object[arrayPos5].inputReset = true
+			PlaySfx(SfxName[Menu Select], 0)
+			keyPress[0].start = true
+		end if
+
+		Touch.X1Pos += 50
+		Touch.X2Pos += 50
+		CheckTouchRect(Touch.X1Pos, 200, Touch.X2Pos, 218)//down
+		if checkResult > -1
+			object[arrayPos5].inputReset = true
+			keyPress[0].down = true
+			PlaySfx(SfxName[Menu Move], 0)
+		end if
+		break
+	case SUBMENU_OPTIONSELECT
+		CheckTouchRect(10, 170, 58, 218)	//Back
+		if checkResult > -1
+			object[arrayPos5].inputReset = true
+			keyPress[0].buttonB = true
+			PlaySfx(SfxName[Menu Back], 0)
+		end if
+
+		if MR.gameType == GAME_SONIC_1
+			Touch.X1Pos  = screen.xcenter
+			Touch.X1Pos -= 22
+			Touch.X2Pos  = Touch.X1Pos
+			Touch.X2Pos += 21
+			CheckTouchRect(Touch.X1Pos, 20, Touch.X2Pos, 36)	//	Default
+			if checkResult > -1
+				object[arrayPos5].inputReset = true
+				object[arrayPos5].shieldType = 0
+				PlaySfx(SfxName[Menu Move], 0)
+			end if
+			Touch.X1Pos += 30
+			Touch.X2Pos  = Touch.X1Pos
+			Touch.X2Pos += 21
+			CheckTouchRect(Touch.X1Pos, 20, Touch.X2Pos, 36)	//	S2
+			if checkResult > -1
+				object[arrayPos5].inputReset = true
+				object[arrayPos5].shieldType = 1
+				PlaySfx(SfxName[Menu Move], 0)
+			end if
+			Touch.X1Pos += 32
+			Touch.X2Pos  = Touch.X1Pos
+			Touch.X2Pos += 38
+			CheckTouchRect(Touch.X1Pos, 20, Touch.X2Pos, 36)	//	S1 + S3
+			if checkResult > -1
+				object[arrayPos5].inputReset = true
+				object[arrayPos5].shieldType = 2
+				PlaySfx(SfxName[Menu Move], 0)
+			end if
+			Touch.X1Pos += 48
+			Touch.X2Pos  = Touch.X1Pos
+			Touch.X2Pos += 38
+			CheckTouchRect(Touch.X1Pos, 20, Touch.X2Pos, 36)	//	S1 + S3
+			if checkResult > -1
+				object[arrayPos5].inputReset = true
+				object[arrayPos5].shieldType = 3
+				PlaySfx(SfxName[Menu Move], 0)
+			end if
+		else
+			Touch.X1Pos  = screen.xcenter
+			Touch.X1Pos -= 32
+			Touch.X2Pos  = Touch.X1Pos
+			Touch.X2Pos += 21
+			CheckTouchRect(Touch.X1Pos, 20, Touch.X2Pos, 36)	//	Default
+			if checkResult > -1
+				object[arrayPos5].inputReset = true
+				object[arrayPos5].shieldType = 0
+				PlaySfx(SfxName[Menu Move], 0)
+			end if
+			Touch.X1Pos += 24
+			Touch.X2Pos  = Touch.X1Pos
+			Touch.X2Pos += 34
+			CheckTouchRect(Touch.X1Pos, 20, Touch.X2Pos, 36)	//	S2 + S3
+			if checkResult > -1
+				object[arrayPos5].inputReset = true
+				object[arrayPos5].shieldType = 1
+				PlaySfx(SfxName[Menu Move], 0)
+			end if
+			Touch.X1Pos += 38
+			Touch.X2Pos  = Touch.X1Pos
+			Touch.X2Pos += 42
+			CheckTouchRect(Touch.X1Pos, 20, Touch.X2Pos, 36)	//	Random
+			if checkResult > -1
+				object[arrayPos5].inputReset = true
+				object[arrayPos5].shieldType = 2
+				PlaySfx(SfxName[Menu Move], 0)
+			end if
+			Touch.X1Pos += 48
+			Touch.X2Pos  = Touch.X1Pos
+			Touch.X2Pos += 48
+			CheckTouchRect(Touch.X1Pos, 20, Touch.X2Pos, 36)	//	Random S3
+			if checkResult > -1
+				object[arrayPos5].inputReset = true
+				object[arrayPos5].shieldType = 3
+				PlaySfx(SfxName[Menu Move], 0)
+			end if
+
+		end if
+
+		Touch.X1Pos  = screen.xcenter
+		Touch.X1Pos += 8
+		Touch.X2Pos  = Touch.X1Pos
+		Touch.X2Pos += 21
+		CheckTouchRect(Touch.X1Pos, 60, Touch.X2Pos, 76)	//	Off
+		if checkResult > -1
+			object[arrayPos5].inputReset = true
+			object[arrayPos5].enableS1Spikes = false
+			PlaySfx(SfxName[Menu Move], 0)
+		end if
+		CheckTouchRect(Touch.X1Pos, 100, Touch.X2Pos, 116)	//	Off
+		if checkResult > -1
+			object[arrayPos5].inputReset = true
+			object[arrayPos5].setting2 = false
+			PlaySfx(SfxName[Menu Move], 0)
+		end if
+		CheckTouchRect(Touch.X1Pos, 140, Touch.X2Pos, 156)	//	Off
+		if checkResult > -1
+			object[arrayPos5].inputReset = true
+			object[arrayPos5].setting3 = false
+			PlaySfx(SfxName[Menu Move], 0)
+		end if
+
+		Touch.X1Pos  = screen.xcenter
+		Touch.X1Pos += 56
+		Touch.X2Pos  = Touch.X1Pos
+		Touch.X2Pos += 21
+		CheckTouchRect(Touch.X1Pos, 60, Touch.X2Pos, 76)	//	Off
+		if checkResult > -1
+			object[arrayPos5].inputReset = true
+			object[arrayPos5].enableS1Spikes = true
+			PlaySfx(SfxName[Menu Move], 0)
+		end if
+		CheckTouchRect(Touch.X1Pos, 100, Touch.X2Pos, 116)	//	Off
+		if checkResult > -1
+			object[arrayPos5].inputReset = true
+			object[arrayPos5].setting2 = true
+			PlaySfx(SfxName[Menu Move], 0)
+		end if
+		CheckTouchRect(Touch.X1Pos, 140, Touch.X2Pos, 156)	//	Off
+		if checkResult > -1
+			object[arrayPos5].inputReset = true
+			object[arrayPos5].setting3 = true
+			PlaySfx(SfxName[Menu Move], 0)
+		end if
+		break
+	end switch
+end function
+
+private function SaveMenu_SetStageLoad
+	if MR.gameType == GAME_SONIC_2
+		switch object.savedZone
+		case -1
+			DrawSpriteScreenFX(13, FX_SCALE, object.xOffset, object.yOffset)
+			save.KnownZone = true
+			break
+		case StageName[R - STAGE MENU]
+			DrawSpriteScreenFX(68, FX_SCALE, object.xOffset, object.yOffset)
+			save.KnownZone = true
+			break
+		case StageName[R - EMERALD HILL ZONE 1]
+		case StageName[R - CHEMICAL PLANT ZONE 1]
+		case StageName[R - AQUATIC RUIN ZONE 1]
+		case StageName[R - CASINO NIGHT ZONE 1]
+		case StageName[R - HILL TOP ZONE 1]
+		case StageName[R - MYSTIC CAVE ZONE 1]
+		case StageName[R - OIL OCEAN ZONE 1]
+		case StageName[R - METROPOLIS ZONE 1]
+			temp0  = object.savedZone
+			temp0 /= 2
+			temp0 += 69
+			DrawSpriteScreenFX(temp0, FX_SCALE, object.xOffset, object.yOffset)
+			save.KnownZone = true
+			break
+		case StageName[R - 3]
+		case StageName[R - SKY CHASE ZONE]
+		case StageName[R - WING FORTRESS ZONE]
+		case StageName[R - DEATH EGG ZONE]
+			temp1  = object.savedZone
+			temp1 -= 5
+			DrawSpriteScreenFX(temp1, FX_SCALE, object.xOffset, object.yOffset)
+			save.KnownZone = true
+			break
+		default
+			temp1 = object.savedZone
+			temp1--
+			switch temp1
+			case StageName[R - EMERALD HILL ZONE 1]
+			case StageName[R - CHEMICAL PLANT ZONE 1]
+			case StageName[R - AQUATIC RUIN ZONE 1]
+			case StageName[R - CASINO NIGHT ZONE 1]
+			case StageName[R - HILL TOP ZONE 1]
+			case StageName[R - MYSTIC CAVE ZONE 1]
+			case StageName[R - OIL OCEAN ZONE 1]
+			case StageName[R - METROPOLIS ZONE 1]
+				temp0  = object.savedZone
+				temp0 /= 2
+				temp0 += 69
+				DrawSpriteScreenFX(temp0, FX_SCALE, object.xOffset, object.yOffset)
+				save.KnownZone = true
+				break
+			end switch
+		end switch
+
+		if object.savedZone > StageName[R - STAGE MENU]
+			DrawSpriteScreenFX(15, FX_SCALE, object.xOffset, object.yOffset)
+		end if
+	else
+		switch object.savedZone
+		case -1
+			DrawSpriteScreenFX(13, FX_SCALE, object.xOffset, object.yOffset)
+			save.KnownZone = true
+			break
+		case StageName[R - STAGE MENU]
+			DrawSpriteScreenFX(68, FX_SCALE, object.xOffset, object.yOffset)
+			save.KnownZone = true
+			break
+		case StageName[R - GREEN HILL ZONE 1]
+		case StageName[R - MARBLE ZONE 1]
+		case StageName[R - SPRING YARD ZONE 1]
+		case StageName[R - LABYRINTH ZONE 1]
+		case StageName[R - STAR LIGHT ZONE 1]
+		case StageName[R - SCRAP BRAIN ZONE 1]
+			temp0  = object.savedZone
+			temp0 /= 3
+			temp0 += 69
+			DrawSpriteScreenFX(temp0, FX_SCALE, object.xOffset, object.yOffset)
+			break
+		case StageName[R - FINAL ZONE]
+			DrawSpriteScreenFX(75, FX_SCALE, object.xOffset, object.yOffset)
+			break
+		default
+			temp1  = object.savedZone
+			temp1 -= 1
+			temp2  = object.savedZone
+			temp2 -= 2
+			switch temp1
+			case StageName[R - GREEN HILL ZONE 1]
+			case StageName[R - MARBLE ZONE 1]
+			case StageName[R - SPRING YARD ZONE 1]
+			case StageName[R - LABYRINTH ZONE 1]
+			case StageName[R - STAR LIGHT ZONE 1]
+			case StageName[R - SCRAP BRAIN ZONE 1]
+				temp0  = object.savedZone
+				temp0 /= 3
+				temp0 += 69
+				DrawSpriteScreenFX(temp0,FX_SCALE,object.xOffset,object.yOffset)
+				break
+			end switch
+			switch temp2
+			case StageName[R - GREEN HILL ZONE 1]
+			case StageName[R - MARBLE ZONE 1]
+			case StageName[R - SPRING YARD ZONE 1]
+			case StageName[R - LABYRINTH ZONE 1]
+			case StageName[R - STAR LIGHT ZONE 1]
+			case StageName[R - SCRAP BRAIN ZONE 1]
+				temp0  = object.savedZone
+				temp0 /= 3
+				temp0 += 69
+				DrawSpriteScreenFX(temp0,FX_SCALE,object.xOffset,object.yOffset)
+				break
+			end switch
+
+		end switch
+	end if
+end function
+
+private function SaveMenu_SetSpecialStage
+	DrawSpriteScreenFX(76, FX_SCALE, object.xOffset, object.yOffset)
+	temp0 = 82
+	temp0 += object.savedSpecial
+	object.xOffset += 146
+	DrawSpriteScreenFX(temp0, FX_SCALE, object.xOffset, object.yOffset)
+	object.xOffset -= 146
+end function
+
+private function SaveMenu_SetStageAct
+	if object.savedZone > -1
+		checkResult = false
+		if MR.gameType == GAME_SONIC_2
+			if object.savedZone < 17
+				checkResult = true
+			end if
+		else
+			if object.savedZone < 18
+				checkResult = true
+			end if
+		end if
+		if checkResult == true
+			object.xOffset += 145
+			DrawSpriteScreenFX(81, FX_SCALE, object.xOffset, object.yOffset)
+			object.xOffset += 45
+		end if
+	end if
+
+	switch object.savedZone
+	case -1
+	case StageName[R - FINAL ZONE]
+	case StageName[R - SKY CHASE ZONE]
+	case StageName[R - WING FORTRESS ZONE]
+	case StageName[R - DEATH EGG ZONE]
+	case StageName[R - STAGE MENU]
+		break
+	case StageName[R - GREEN HILL ZONE 1]
+	case StageName[R - MARBLE ZONE 1]
+	case StageName[R - SPRING YARD ZONE 1]
+	case StageName[R - LABYRINTH ZONE 1]
+	case StageName[R - STAR LIGHT ZONE 1]
+	case StageName[R - SCRAP BRAIN ZONE 1]
+	case StageName[R - EMERALD HILL ZONE 1]
+	case StageName[R - CHEMICAL PLANT ZONE 1]
+	case StageName[R - AQUATIC RUIN ZONE 1]
+	case StageName[R - CASINO NIGHT ZONE 1]
+	case StageName[R - HILL TOP ZONE 1]
+	case StageName[R - MYSTIC CAVE ZONE 1]
+	case StageName[R - OIL OCEAN ZONE 1]
+	case StageName[R - METROPOLIS ZONE 1]
+		DrawSpriteScreenFX(83,FX_SCALE,object.xOffset,object.yOffset)
+		break
+	default
+		// Act 2 & 3 (S1)
+		temp1 = object.savedZone
+		temp1--
+		temp2  = object.savedZone
+		temp2 -= 2
+		switch temp1
+		case -1
+			break
+		case StageName[R - GREEN HILL ZONE 1]
+		case StageName[R - MARBLE ZONE 1]
+		case StageName[R - SPRING YARD ZONE 1]
+		case StageName[R - LABYRINTH ZONE 1]
+		case StageName[R - STAR LIGHT ZONE 1]
+		case StageName[R - SCRAP BRAIN ZONE 1]
+		case StageName[R - EMERALD HILL ZONE 1]
+		case StageName[R - CHEMICAL PLANT ZONE 1]
+		case StageName[R - AQUATIC RUIN ZONE 1]
+		case StageName[R - CASINO NIGHT ZONE 1]
+		case StageName[R - HILL TOP ZONE 1]
+		case StageName[R - MYSTIC CAVE ZONE 1]
+		case StageName[R - OIL OCEAN ZONE 1]
+		case StageName[R - METROPOLIS ZONE 1]
+			DrawSpriteScreenFX(84, FX_SCALE, object.xOffset, object.yOffset)
+			break
+		end switch
+		switch temp2
+		case -1
+			break
+		case StageName[R - GREEN HILL ZONE 1]
+		case StageName[R - MARBLE ZONE 1]
+		case StageName[R - SPRING YARD ZONE 1]
+		case StageName[R - LABYRINTH ZONE 1]
+		case StageName[R - STAR LIGHT ZONE 1]
+		case StageName[R - SCRAP BRAIN ZONE 1]
+			DrawSpriteScreenFX(85,FX_SCALE,object.xOffset,object.yOffset)
+			break
+		end switch
+	end switch
+end function
+
+event ObjectUpdate
+	if object[arrayPos5].inputReset == false
+		CallFunction(SaveMenu_TouchFunction)
+	end if
+
+	switch object[arrayPos5].state
+	case MAINMENU_SAVEMENU
+		SetActivePalette(2, 0, screen.ysize)
+		if KeyPress[0].up == true
+			PlaySfx(SfxName[Menu Move], 0)
+			object[arrayPos5].currentselection--
+		end if
+		if KeyPress[0].down == true
+			PlaySfx(SfxName[Menu Move], 0)
+			object[arrayPos5].currentselection++
+		end if
+
+		object[arrayPos5].currentselection %= 6
+		if object[arrayPos5].currentselection < 0
+			object[arrayPos5].currentselection = 5
+		end if
+		
+		if KeyPress[0].buttonB == true
+			PlaySfx(SfxName[Menu Back], 0)
+			SetActivePalette(1, 0, screen.ysize)
+			object[6].Type = TypeName[BlankObject]
+			object[arrayPos5].state = MAINMENU_MENU
+		end if
+
+		checkResult  = KeyPress[0].buttonA
+		checkResult |= keyPress[0].start
+		if checkResult == true
+			PlaySfx(SfxName[Menu Select], 0)
+			if object[arrayPos5].currentselection < 5
+				object[arrayPos5].state++
+			else
+				object[arrayPos5].state = MAINMENU_SAVEDELETE
+			end if
+		end if
+		object.state = SUBMENU_SAVESELECT
+		break
+	case MAINMENU_SAVEDELETE
+		if KeyPress[0].up == true
+			object[arrayPos5].currentselection--
+			PlaySfx(SfxName[Menu Move], 0)
+		end if
+		if KeyPress[0].down == true
+			object[arrayPos5].currentselection++
+			PlaySfx(SfxName[Menu Move], 0)
+		end if
+
+		object[arrayPos5].currentselection %= 6
+		if object[arrayPos5].currentselection < 0
+			object[arrayPos5].currentselection = 5
+		end if
+
+		if KeyPress[0].buttonB == true
+			PlaySfx(SfxName[Menu Back], 0)
+			object[arrayPos5].state = MAINMENU_SAVEMENU
+		end if
+
+		checkResult  = KeyPress[0].buttonA
+		checkResult |= keyPress[0].start
+		if CheckResult == true
+			PlaySfx(SfxName[Menu Select], 0)
+			if object[arrayPos5].currentselection < 5
+				ArrayPos1   = object[arrayPos5].currentselection
+				ArrayPos1 <<= 3
+				saveRAM[arrayPos1] = 0
+				ArrayPos1++
+				saveRAM[arrayPos1] = 0
+				ArrayPos1++
+				saveRAM[arrayPos1] = 0
+				ArrayPos1++
+				saveRAM[arrayPos1] = 0
+				ArrayPos1++
+				saveRAM[arrayPos1] = 0
+				ArrayPos1++
+				saveRAM[arrayPos1] = 0
+				ArrayPos1++
+				saveRAM[arrayPos1] = 0
+				writeSaveRAM()
+			end if
+			object[arrayPos5].state = MAINMENU_SAVEMENU
+		end if
+		object.state = SUBMENU_SAVESELECT
+		break
+
+	case MAINMENU_CHARSELECT
+	case MAINMENU_EXTRAS_CHARSEL
+		if object[arrayPos5].customCharToggle == false
+			if KeyPress[0].left == true
+				stage.playerListPos--
+				PlaySfx(SfxName[Menu Move], 0)
+			end if
+			if KeyPress[0].right == true
+				stage.playerListPos++
+				PlaySfx(SfxName[Menu Move], 0)
+			end if
+			if KeyPress[0].up == true
+				if object[arrayPos5].charPairing != 0
+					object[arrayPos5].charPairing--
+					if stage.playerListPos != PlayerName[KNUCKLES]
+						PlaySfx(SfxName[Menu Move], 0)
+					end if
+				end if
+			end if
+			if KeyPress[0].down == true
+				if object[arrayPos5].charPairing != 1
+					object[arrayPos5].charPairing++
+					if stage.playerListPos != PlayerName[KNUCKLES]
+						PlaySfx(SfxName[Menu Move], 0)
+					end if
+				end if
+			end if
+			if stage.playerListPos > 2
+				stage.playerListPos = 0
+			end if
+			if stage.playerListPos < 0
+				stage.playerListPos = 2
+			end if
+		else
+			if AmyEnabled == true
+				if KeyPress[0].up == true
+					stage.playerListPos--
+					PlaySfx(SfxName[Menu Move], 0)
+				end if
+				if KeyPress[0].down == true
+					stage.playerListPos++
+					PlaySfx(SfxName[Menu Move], 0)
+				end if
+			end if
+			if stage.playerListPos > 6
+				stage.playerListPos = 4
+			end if
+			if stage.playerListPos < 4
+				stage.playerListPos = 6
+			end if
+		end if
+
+		checkResult  = keyPress[0].buttonA
+		checkResult |= keyPress[0].start
+		if checkResult == true
+			CheckResult = true
+			PlaySfx(SfxName[Menu Select], 0)
+			if object[arrayPos5].state == MAINMENU_EXTRAS_CHARSEL
+				object[arrayPos5].state = MAINMENU_EXTRAS_LOAD
+			else
+				object[arrayPos5].state = MAINMENU_LOADGAME
+			end if
+		end if
+
+		if KeyPress[0].buttonB == true
+			PlaySfx(SfxName[Menu Back], 0)
+			if object[arrayPos5].customCharToggle == true
+				object[arrayPos5].customCharToggle = false
+			else
+				if object[arrayPos5].state == MAINMENU_EXTRAS_CHARSEL
+					object[arrayPos5].state = MAINMENU_EXTRAS
+				else
+					object[arrayPos5].state = MAINMENU_SAVEMENU
+				end if
+			end if
+		end if
+		
+		if KeyPress[0].buttonC == true
+			stage.playerListPos = 4
+			object[arrayPos5].customCharToggle = true
+		end if
+		if KeyPress[0].buttonZ == true
+			object[arrayPos5].state = MAINMENU_OPTIONSELECT
+		end if
+
+		object.state = SUBMENU_PLAYERSELECT
+		break
+
+	case MAINMENU_EXTRAS
+		SetActivePalette(2, 0, screen.ysize)
+		if KeyPress[0].up == true
+			PlaySfx(SfxName[Menu Move], 0)
+			object[arrayPos5].currentselection--
+		end if
+		if KeyPress[0].down == true
+			PlaySfx(SfxName[Menu Move], 0)
+			object[arrayPos5].currentselection++
+		end if
+		if MR.gameType == GAME_SONIC_1
+			if object[arrayPos5].currentSelection == 1
+				object[arrayPos5].currentSelection = 4
+			end if
+			if object[arrayPos5].currentSelection == 3
+				object[arrayPos5].currentSelection = 0
+			end if
+		end if
+		object[arrayPos5].currentselection %= 5
+		if object[arrayPos5].currentselection < 0
+			object[arrayPos5].currentselection = 4
+		end if
+
+		if KeyPress[0].buttonB == true
+			PlaySfx(SfxName[Menu Back], 0)
+			CheckResult = false
+			object[arrayPos5].state = MAINMENU_MENU
+			SetActivePalette(1, 0, screen.ysize)
+		end if
+
+		checkResult  = keyPress[0].buttonA
+		checkResult |= keyPress[0].start
+		if checkResult == true
+			stage.playerListPos = 0
+			stage.player2Enabled = false
+			switch object[arrayPos5].currentselection
+			case 0
+			case 1
+			case 4
+				PlaySfx(SfxName[Menu Select], 0)
+				object[arrayPos5].state = MAINMENU_EXTRAS_LOAD
+				break
+			case 2
+				PlaySfx(SfxName[Menu Select], 0)
+				object[arrayPos5].state = MAINMENU_EXTRAS_CHARSEL
+				break
+			case 3
+				CallNativeFunction2(FileExists, 0, "Data/Stages/ZoneM/Act1.bin")
+				if CheckResult == true
+					PlaySfx(SfxName[Menu Select], 0)
+					object[arrayPos5].state = MAINMENU_EXTRAS_CHARSEL
+				else
+					PlaySFX(SfxName[Hurt], 0)
+				end if
+				break
+			end switch
+		end if
+		object.state = SUBMENU_EXTRASELECT
+		break
+
+	case MAINMENU_OPTIONSELECT
+		if KeyPress[0].up == true
+			PlaySfx(SfxName[Menu Move], 0)
+			object[arrayPos5].subMenuSelection--
+		end if
+		if KeyPress[0].down == true
+			PlaySfx(SfxName[Menu Move], 0)
+			object[arrayPos5].subMenuSelection++
+		end if
+		if KeyPress[0].buttonB == true
+			PlaySfx(SfxName[Menu Move], 0)
+			if screen.xsize > 384
+				object[arrayPos5].state = MAINMENU_CHARSELECT
+			else
+				object[arrayPos5].state = MAINMENU_CHARSELECT_ALT
+			end if
+		end if
+		if engine.deviceType == RETRO_MOBILE
+			if object[arrayPos5].subMenuSelection > 1
+				if object[arrayPos5].subMenuSelection < 6
+					if KeyPress[0].up == true
+						object[arrayPos5].subMenuSelection = 1
+					end if
+					if KeyPress[0].down == true
+						object[arrayPos5].subMenuSelection = 6
+					end if
+				end if
+			end if
+		end if
+		object[arrayPos5].subMenuSelection %= 4
+		if object[arrayPos5].subMenuSelection < 0
+			object[arrayPos5].subMenuSelection = 3
+		end if
+		checkResult  = KeyPress[0].left
+		checkResult |= KeyPress[0].right
+		if checkResult == true
+			PlaySfx(SfxName[Menu Move], 0)
+			switch object[arrayPos5].subMenuSelection
+			case 0
+				object[arrayPos5].shieldType++
+				object[arrayPos5].shieldType %= 4
+				if object[arrayPos5].shieldType < 0
+					object[arrayPos5].shieldType = 0
+				end if
+				break
+			case 1
+				object[arrayPos5].enableS1Spikes ^= true
+				break
+			case 2
+				object[arrayPos5].setting2 ^= true
+				break
+			case 3
+				object[arrayPos5].setting3 ^= true
+				break
+			end switch
+			end if
+		object.state = SUBMENU_OPTIONSELECT
+		break
+
+	case MAINMENU_CHARSELECT_ALT
+		if KeyPress[0].up == true
+			stage.playerListPos--
+			PlaySfx(SfxName[Menu Move], 0)
+		end if
+
+		if KeyPress[0].down == true
+			stage.playerListPos++
+			PlaySfx(SfxName[Menu Move], 0)
+		end if
+
+		if AmyEnabled == true
+			if stage.playerListPos > 6
+				stage.playerListPos = 0
+			end if
+			if stage.playerListPos < 0
+				stage.playerListPos = 6
+			end if
+		else
+			if stage.playerListPos > 4
+				stage.playerListPos = 0
+			end if
+			if stage.playerListPos < 0
+				stage.playerListPos = 4
+			end if
+		end if
+
+		checkResult  = keyPress[0].buttonA
+		checkResult |= keyPress[0].start
+		if checkResult == true
+			checkResult = true
+			PlaySfx(SfxName[Menu Select], 0)
+			object[arrayPos5].state = MAINMENU_LOADGAME
+		end if
+
+		if KeyPress[0].buttonB == true
+			PlaySfx(SfxName[Menu Back], 0)
+			object[arrayPos5].state = MAINMENU_SAVEMENU
+		end if
+		
+		if KeyPress[0].buttonZ == true
+			object[arrayPos5].state = MAINMENU_OPTIONSELECT
+		end if
+		object.state = SUBMENU_PLAYERSELECT_ALT
+		break
+	end switch
+
+	object.DrawOrder = 4
+end event
+
+event ObjectDraw
+	switch object.state
+	case SUBMENU_SAVESELECT
+		DrawSpriteScreenFX(0, FX_FLIP, 10, 170)	// Back
+		object.yOffset = 10
+		ArrayPos0 = 0
+		while ArrayPos0 < 4
+			if object[arrayPos5].state == MAINMENU_SAVEDELETE
+				object.rectG = 0
+				EditFrame(3, -15, 0, 16, 33, 69, 154)
+				EditFrame(4, 264, 0, 16, 33, 86, 154)
+			else
+				object.rectG = 255
+				EditFrame(3, -15, 0, 16, 33, 35, 154)
+				EditFrame(4, 264, 0, 16, 33, 52, 154)
+			end if
+			object.inkEffect = 2
+			object.alpha	 = 160
+			Save.KnownZone   = 0
+
+			object.xOffset   = Screen.xsize
+			object.xOffset  -= 282
+			DrawSpriteScreenFX(1, FX_INK, object.xOffset, object.yOffset)
+			DrawRect(object.xOffset, object.yOffset, 265, 33, 0, 0, 0, 160)
+			DrawSpriteScreenFX(2,FX_INK, object.xOffset, object.yOffset)
+			object.alpha	 = 64
+			if object[arrayPos5].currentselection == arrayPos0
+				DrawSpriteScreenFX(3, FX_INK, object.xOffset, object.yOffset)
+				DrawSpriteScreenFX(4, FX_INK, object.xOffset, object.yOffset)
+				DrawRect(object.xOffset, object.yOffset, 265, 33, 255, object.rectG, 0, 64)
+			end if
+
+			arrayPos1   = arrayPos0
+			arrayPos1 <<= 3
+			object.savedChar = saveRAM[arrayPos1]
+			arrayPos1 += 4
+			object.savedZone = saveRAM[arrayPos1]
+			object.savedZone--
+			object.Scale    = 512
+			object.xOffset  = Screen.xsize
+			object.xOffset -= 242
+			object.yOffset += 3
+			CheckEqual(MR.gameType, GAME_SONIC_1)
+			temp0  = checkResult
+			CheckLower(object.savedZone, 129)
+			temp0 &= checkResult
+			CheckEqual(MR.gameType, GAME_SONIC_2)
+			temp0 |= checkResult
+			if temp0 == true
+				CallFunction(SaveMenu_SetStageLoad)
+			end if
+			CallFunction(SaveMenu_SetStageAct)
+			arrayPos1++
+			object.savedEmeralds	= saveRAM[arrayPos1]
+			arrayPos1++
+			object.savedSpecial		= saveRAM[arrayPos1]
+			if temp0 == false
+				CallFunction(SaveMenu_SetSpecialStage)
+			end if
+			arrayPos1++
+			object.bonusSetting		= saveRAM[arrayPos1]
+			object.xOffset  = Screen.xsize
+			object.xOffset -= 258
+			if object.savedZone >= 0
+				temp0  = 102
+				temp0 += object.savedChar
+
+				temp2  = temp0
+				if object[arrayPos5].state == 10
+					temp2 += 24
+				else
+					temp2 += 12
+				end if
+				
+				switch object.savedChar
+				case PlayerName[SONIC]
+				case PlayerName[TAILS]
+				case PlayerName[KNUCKLES]
+					DrawSpriteScreenFX(temp0, FX_FLIP, object.xOffset, object.yOffset)
+					break
+				case PlayerName[SONIC AND TAILS]
+					temp0 -= 2
+					temp2 -= 2
+					DrawSpriteScreenFX(temp0, FX_FLIP, object.xOffset, object.yOffset)
+					if object[arrayPos5].currentselection == arrayPos0
+						DrawSpriteScreenFX(temp2, FX_INK, object.xOffset, object.yOffset)
+					end if
+
+					temp0--
+					temp2--
+					object.xOffset -= 12
+					DrawSpriteScreenFX(temp0, FX_FLIP, object.xOffset, object.yOffset)
+					break
+				case 4
+					temp0 -= 3
+					temp2 -= 3
+					DrawSpriteScreenFX(temp0, FX_FLIP, object.xOffset, object.yOffset)
+					if object[arrayPos5].currentselection == arrayPos0
+						DrawSpriteScreenFX(temp2, FX_INK, object.xOffset, object.yOffset)
+					end if
+					temp0++
+					temp2++
+					object.xOffset -= 12
+					DrawSpriteScreenFX(temp0, FX_FLIP, object.xOffset, object.yOffset)
+					break
+				case 5
+					temp0 -= 2
+					temp2 -= 2
+					if AmyEnabled == false
+						temp0 += 102
+					end if
+					DrawSpriteScreenFX(temp0, FX_FLIP, object.xOffset, object.yOffset)
+					break
+				case 6
+					temp0 -= 5
+					temp2 -= 5
+					object.xOffset -= 24
+					if AmyEnabled == false
+						temp0 += 28
+					end if
+					DrawSpriteScreenFX(temp0, FX_FLIP, object.xOffset, object.yOffset)
+					if object[arrayPos5].currentselection == arrayPos0
+						DrawSpriteScreenFX(temp2, FX_INK, object.xOffset, object.yOffset)
+					end if
+					temp0 += 2
+					temp2 += 2
+					object.xOffset += 24
+					if AmyEnabled == false
+						temp0 -= 1
+					end if
+					DrawSpriteScreenFX(temp0, FX_FLIP, object.xOffset, object.yOffset)
+					break
+				default
+					DrawSpriteScreenFX(106, FX_FLIP, object.xOffset, object.yOffset)
+					if object[arrayPos5].currentselection == arrayPos0
+						if object[arrayPos5].state == MAINMENU_SAVEDELETE
+							DrawSpriteScreenFX(130, FX_INK, object.xOffset, object.yOffset)
+						else
+							DrawSpriteScreenFX(118, FX_INK, object.xOffset, object.yOffset)
+						end if
+					end if
+					temp2 = 0
+				end switch
+				if object[arrayPos5].currentselection == arrayPos0
+					DrawSpriteScreenFX(temp2, FX_INK, object.xOffset, object.yOffset)
+				end if
+
+				object.alpha	= 160
+				object.yOffset += 14
+				object.xOffset  = Screen.xsize
+				object.xOffset -= 244
+				object.maxEmeralds = 7
+				if MR.gameType == GAME_SONIC_1
+					GetBit(checkResult, object.bonusSetting, 4)
+					if checkResult == false
+						object.maxEmeralds = 6
+					end if
+				end if
+				object.emeraldBit = 0
+				while object.emeraldBit < object.maxEmeralds
+					GetBit(temp0, object.savedEmeralds, object.emeraldBit)
+					if MR.gameType == GAME_SONIC_2
+						object.emeraldFrame  = 17
+						object.emeraldFrame += object.emeraldBit
+					else
+						object.emeraldFrame  = 25
+						object.emeraldFrame += object.emeraldBit
+						if object.emeraldBit == 2
+							if object.maxEmeralds == 7
+								object.emeraldFrame = 32
+							end if
+						end if
+					end if
+
+					if temp0 == true
+						DrawSpriteScreenFX(object.emeraldFrame, FX_FLIP, object.xOffset, object.yOffset)
+					else
+						if MR.gameType == GAME_SONIC_2
+							DrawSpriteScreenFX(16, FX_FLIP, object.xOffset, object.yOffset)
+						else
+							DrawSpriteScreenFX(24, FX_FLIP, object.xOffset, object.yOffset)
+						end if
+					end if
+					object.xOffset += 20
+					object.emeraldBit++
+				loop
+				if object.maxEmeralds == 6
+					object.xOffset += 20
+				end if
+				if object.bonusSetting >= true
+					GetBit(checkResult, object.bonusSetting, 5)
+					if checkResult == true
+						DrawSpriteScreenFX(63, FX_FLIP, object.xOffset, object.yOffset)
+					end if
+					object.xOffset += 18
+					GetBit(checkResult, object.bonusSetting, 6)
+					if checkResult == true
+						DrawSpriteScreenFX(64, FX_FLIP, object.xOffset, object.yOffset)
+					end if
+					object.xOffset += 18
+					GetBit(checkResult, object.bonusSetting, 2)
+					if checkResult == true
+						DrawSpriteScreenFX(65, FX_FLIP, object.xOffset, object.yOffset)
+					end if
+					object.xOffset += 18
+					GetBit(checkResult, object.bonusSetting, 3)
+					if checkResult == true
+						DrawSpriteScreenFX(66, FX_FLIP, object.xOffset, object.yOffset)
+					end if
+					object.xOffset += 18
+					GetBit(checkResult, object.bonusSetting, 4)
+					if checkResult == true
+						DrawSpriteScreenFX(67, FX_FLIP, object.xOffset, object.yOffset)
+					end if
+				end if
+			else
+				object.yOffset += 14
+			end if
+			ArrayPos0++
+			object.yOffset += 25
+		loop
+		object.alpha	= 160
+		object.xOffset  = Screen.xsize
+		object.xOffset -= 235
+		object.yOffset  = 178
+		DrawSpriteScreenFX(1, FX_INK, object.xOffset, object.yOffset)
+		DrawRect(object.xOffset, object.yOffset, 194, 33, 0, 0, 0, 160)
+		if object[arrayPos5].currentselection == 4
+			object.alpha	= 64
+			DrawSpriteScreenFX(3, FX_INK, object.xOffset, object.yOffset)
+			DrawRect(object.xOffset, object.yOffset, 194, 33, 255, object.rectG, 0, 64)
+			object.alpha	= 160
+		end if
+		object.xOffset -= 71
+		DrawSpriteScreenFX(2, FX_INK, object.xOffset, object.yOffset)
+		if object[arrayPos5].currentselection == 4
+			object.alpha	= 64
+			DrawSpriteScreenFX(4, FX_INK, object.xOffset, object.yOffset)
+			object.alpha	= 160
+		end if
+		
+		object.xOffset += 106
+		DrawSpriteScreenFX(14, FX_FLIP, object.xOffset, 188)
+		DrawSpriteScreenFX(15, FX_FLIP, object.xOffset, 213)
+		if object[arrayPos5].currentselection == 5
+			object.xOffset  = screen.xsize
+			object.xOffset -= 198
+			DrawRect(object.xOffset, 214, 116, 18, 255, object.rectG, 0, 64)
+		end if
+		break
+	case SUBMENU_PLAYERSELECT
+		EditFrame(107, -26, 0, 52, 12,  1,  44)
+		EditFrame(108, -23, 0, 46, 12,  1,  57)
+		EditFrame(109, -42, 0, 84, 12,  1,  70)
+		EditFrame(119, -26, 0, 52, 12, 54,  44)
+		EditFrame(120, -23, 0, 46, 12, 48,  57)
+		EditFrame(121, -42, 0, 84, 12, 86,  70)
+		if Screen.xsize <= 384
+			EditFrame(9,   0, 0, 288,  10,   1, 747)
+			EditFrame(11,   0, 0, 288,  10,   1, 758)
+			EditFrame(10, 288, 0,  10, 228, 233,   0)
+
+			DrawRect(16, 12, 288, 208, 0, 0, 0, 160)
+		else
+			EditFrame(9,   0, 0, 400,  10,   1, 747)
+			EditFrame(11,   0, 0, 400,  10,   1, 758)
+			EditFrame(10, 400, 0,  10, 228, 233,   0)
+
+			object.xOffset  = screen.xcenter
+			object.xOffset -= 201
+			DrawRect(object.xOffset, 12, 400, 208, 0, 0, 0, 160)
+		end if
+		object.inkEffect = 2
+		object.alpha   = 160
+		object.xOffset = screen.xcenter
+		if Screen.xsize <= 384
+			object.xOffset -= 144
+		else
+			object.xOffset -= 201
+		end if
+
+		DrawSpriteScreenFX(8, FX_INK, object.xOffset, 2)
+		DrawSpriteScreenFX(9, FX_INK, object.xOffset, 2)
+		DrawSpriteScreenFX(10, FX_INK, object.xOffset, 2)
+		DrawSpriteScreenFX(11, FX_INK, object.xOffset, 220)
+
+		if object[arrayPos5].customCharToggle == 0
+			object.xOffset=screen.xcenter
+			if Screen.xsize <= 384
+				object.scale    = 340
+				object.xOffset -= 80
+				object.yOffset  = 110
+			else
+				object.scale    = 512
+				object.xOffset -= 135
+				object.yOffset  = 150
+			end if
+			DrawSpriteScreenFX(92, FX_SCALE, object.xOffset, 20)
+			if stage.playerListPos == 0
+				SetPaletteEntry(2, 229, 0xFFC000)
+				DrawSpriteScreenFX(119, FX_FLIP, object.xOffset, object.yOffset)
+			else
+				SetPaletteEntry(2, 229, 0xFFFA00)
+				DrawSpriteScreenFX(107, FX_FLIP, object.xOffset, object.yOffset)
+			end if
+			DrawSpriteScreenFX(96, FX_SCALE, object.xOffset, 15)
+			if Screen.xsize <= 384
+				object.xOffset += 80
+				object.yOffset  = 150
+			else
+				object.xOffset += 135
+				object.yOffset  = 196
+			end if
+			CheckEqual(stage.playerListPos, 1)
+			Temp7 = CheckResult
+			CheckEqual(object[arrayPos5].charPairing, 1)
+			Temp6 = CheckResult
+			if Temp6 == 1
+				if Options.saveSlot == -1
+					CheckEqual(stage.playerListPos, 0)
+					Temp7 |= CheckResult
+					CheckEqual(stage.playerListPos, 2)
+					Temp7 |= CheckResult
+				else
+					CheckEqual(stage.playerListPos, 0)
+					Temp7 |= CheckResult
+				end if
+			end if
+			DrawSpriteScreenFX(93, FX_SCALE, object.xOffset, 60)
+			if Temp7 == 1
+				SetPaletteEntry(2, 231, 0x0060FF)
+				DrawSpriteScreenFX(120, FX_FLIP, object.xOffset, object.yOffset)
+			else
+				SetPaletteEntry(2, 231, 0x0080FF)
+				DrawSpriteScreenFX(108, FX_FLIP, object.xOffset, object.yOffset)
+			end if
+			DrawSpriteScreenFX(97, FX_SCALE, object.xOffset, 60)
+			if Screen.xsize <= 384
+				object.xOffset += 90
+				object.yOffset  = 110
+			else
+				object.xOffset += 135
+				object.yOffset  = 150
+			end if
+
+			DrawSpriteScreenFX(94, FX_SCALE, object.xOffset, 20)
+			if stage.playerListPos == 2
+				SetPaletteEntry(2, 233, 0x008000)
+				
+				DrawSpriteScreenFX(121, FX_FLIP, object.xOffset, object.yOffset)
+			else
+				SetPaletteEntry(2, 233, 0x009000)
+				DrawSpriteScreenFX(109, FX_FLIP, object.xOffset, object.yOffset)
+			end if
+			DrawSpriteScreenFX(98, FX_SCALE, object.xOffset, 10)
+			DrawSpriteScreenFX(38,FX_FLIP, object.xOffset, 192)
+			object.xOffset = Screen.xcenter
+			if Screen.xsize <= 384
+				object.yOffset += 80
+			else
+				object.yOffset  = 30
+			end if
+			DrawSpriteScreenFX(12, FX_FLIP, object.xOffset, object.yOffset)
+			if Screen.xsize <= 384
+				object.scale    = 512
+				object.xOffset  = Screen.xsize
+				object.xOffset -= 220
+				object.yOffset  = 135
+			else
+				object.scale    = 1024
+				object.xOffset  = Screen.xcenter
+				object.xOffset -= 95
+				object.yOffset  = 164
+			end if
+			if object[arrayPos5].charPairing == true
+				if stage.playerListPos == 0
+					DrawSpriteScreenFX(101, FX_SCALE, object.xOffset, object.yOffset)
+				else
+					DrawSpriteScreenFX(100, FX_SCALE, object.xOffset, object.yOffset)
+				end if
+			else
+				DrawSpriteScreenFX(100, FX_SCALE, object.xOffset, object.yOffset)
+			end if
+		else
+			object.scale    = 512
+			object.xOffset  = screen.xcenter
+			if screen.xsize != 320
+				EditFrame(123, 0, 0, 170, 12, 172, 512)
+				EditFrame(111, 0, 0, 170, 12, 1, 512)
+				temp0  = screen.xcenter
+				temp0 -= 120
+			else
+				EditFrame(123, 0, 0, 130, 12, 132, 538)
+				EditFrame(111, 0, 0, 130, 12, 1, 538)
+				temp0  = 80
+			end if
+			DrawSpriteScreenFX(111, FX_SCALE, object.xOffset, 20)
+#platform: USE_ORIGINS
+			if AmyEnabled == true
+				DrawSpriteScreenFX(112, FX_SCALE, object.xOffset, 40)
+				DrawSpriteScreenFX(113, FX_SCALE, object.xOffset, 60)
+			end if
+#endplatform
+			DrawSpriteScreenFX(95, FX_SCALE, temp0, 30)
+			switch stage.playerListPos
+			case 4
+				DrawSpriteScreenFX(123, FX_SCALE, object.xOffset, 20)
+				temp0 += 17
+				DrawSpriteScreenFX(97, FX_FLIP, temp0, 20)
+				temp0 -= 36
+				object.direction = 1
+				DrawSpriteScreenFX(98, FX_FLIP, temp0, 24)
+				break
+			case 5
+				DrawSpriteScreenFX(124, FX_SCALE, object.xOffset, 40)
+				DrawSpriteScreenFX(99, FX_FLIP, temp0, 20)
+				break
+			case 6
+				DrawSpriteScreenFX(125, FX_SCALE, object.xOffset, 60)
+				temp0 += 17
+				DrawSpriteScreenFX(97, FX_FLIP, temp0, 20)
+				object.direction = 1
+				temp0 -= 34
+				DrawSpriteScreenFX(99, FX_FLIP, temp0, 20)
+				break
+			end switch
+			object.direction = 0
+			object.xOffset = screen.xcenter
+			DrawSpriteScreenFX(5, FX_FLIP, object.xOffset, 200)
+			object.xOffset += 50
+			DrawSpriteScreenFX(7, FX_FLIP, object.xOffset, 200)
+			object.xOffset += 50
+			DrawSpriteScreenFX(6, FX_FLIP, object.xOffset, 200)
+
+		end if
+		DrawSpriteScreenFX(0, FX_FLIP, 10, 170)	// Back
+		break
+	case SUBMENU_EXTRASELECT
+		object.yOffset = 10
+		if MR.gameType == GAME_SONIC_2
+			temp0 = 4
+		else
+			temp0 = 1
+		end if
+		ArrayPos0 = 0
+		while ArrayPos0 < temp0
+			object.inkEffect = 2
+			object.alpha     = 160
+			object.xOffset   = Screen.xsize
+			object.xOffset  -= 282
+			DrawSpriteScreenFX(1, FX_INK, object.xOffset, object.yOffset)
+			DrawRect(object.xOffset, object.yOffset, 265, 33, 0, 0, 0, 160)
+			DrawSpriteScreenFX(2,FX_INK, object.xOffset, object.yOffset)
+			object.alpha     = 64
+			if object[arrayPos5].currentselection == arrayPos0
+				DrawSpriteScreenFX(3, FX_INK, object.xOffset, object.yOffset)
+				DrawSpriteScreenFX(4, FX_INK, object.xOffset, object.yOffset)
+				DrawRect(object.xOffset, object.yOffset, 265, 33, 255, 255, 0, 64)
+			end if
+			object.yOffset  += 42
+			ArrayPos0++
+		loop
+
+		object.alpha     = 160
+		object.xOffset  = Screen.xsize
+		object.xOffset -= 245
+		object.yOffset  = 178
+		DrawSpriteScreenFX(1, FX_INK, object.xOffset, object.yOffset)
+		DrawRect(object.xOffset, object.yOffset, 194, 33, 0, 0, 0, 160)
+		if object[arrayPos5].currentselection == 4
+			object.alpha	= 64
+			DrawSpriteScreenFX(3, FX_INK, object.xOffset, object.yOffset)
+			DrawRect(object.xOffset, object.yOffset, 194, 33, 255, 255, 0, 64)
+			object.alpha	= 160
+		end if
+		object.xOffset -= 71
+		DrawSpriteScreenFX(2, FX_INK, object.xOffset, object.yOffset)
+		if object[arrayPos5].currentselection == 4
+			object.alpha	= 64
+			DrawSpriteScreenFX(4, FX_INK, object.xOffset, object.yOffset)
+		end if
+		object.alpha	= 64
+		
+		object.xOffset += 110
+		if MR.gameType == GAME_SONIC_2
+			DrawSpriteScreenFX(34, FX_FLIP, object.xOffset,  20)
+			DrawSpriteScreenFX(35, FX_FLIP, object.xOffset,  62)
+			DrawSpriteScreenFX(36, FX_FLIP, object.xOffset, 104)
+			DrawSpriteScreenFX(37, FX_FLIP, object.xOffset, 146)
+		else
+			DrawSpriteScreenFX(35, FX_FLIP, object.xOffset,  20)
+		end if
+		DrawSpriteScreenFX(33, FX_FLIP, object.xOffset, 188)
+		DrawSpriteScreenFX(0, FX_FLIP, 10, 170)	// Back
+		break
+	case SUBMENU_OPTIONSELECT
+		EditFrame(9,    0, 0, 288,  10,   1, 747)
+		EditFrame(11,   0, 0, 288,  10,   1, 758)
+		EditFrame(10, 288, 0,  10, 228, 233,   0)
+
+		object.inkEffect = 2
+		object.alpha   = 160
+		object.xOffset = screen.xcenter
+		object.xOffset -= 144
+		object.scale = 512
+		DrawRect(object.xOffset, 12, 288, 208, 0, 0, 0, 160)
+		DrawSpriteScreenFX(8, FX_INK, object.xOffset, 2)
+		DrawSpriteScreenFX(9, FX_INK, object.xOffset, 2)
+		DrawSpriteScreenFX(10, FX_INK, object.xOffset, 2)
+		DrawSpriteScreenFX(11, FX_INK, object.xOffset, 220)
+		object.xOffset += 16
+		DrawSpriteScreenFX(39, FX_FLIP, object.xOffset, 20)
+		DrawSpriteScreenFX(40, FX_FLIP, object.xOffset, 60)
+		DrawSpriteScreenFX(41, FX_FLIP, object.xOffset, 100)
+		DrawSpriteScreenFX(42, FX_FLIP, object.xOffset, 140)
+		switch object[arrayPos5].subMenuSelection
+		case 0
+			DrawSpriteScreenFX(51, FX_FLIP, object.xOffset, 20)
+			break
+		case 1
+			DrawSpriteScreenFX(52, FX_FLIP, object.xOffset, 60)
+			break
+		case 2
+			DrawSpriteScreenFX(53, FX_FLIP, object.xOffset, 100)
+			break
+		case 3
+			DrawSpriteScreenFX(54, FX_FLIP, object.xOffset, 140)
+			break
+		end switch
+
+		object.xOffset += 112
+		DrawSpriteScreenFX(43, FX_FLIP, object.xOffset, 20)
+		DrawSpriteScreenFX(44, FX_FLIP, object.xOffset, 20)
+		DrawSpriteScreenFX(45, FX_FLIP, object.xOffset, 20)
+		DrawSpriteScreenFX(46, FX_FLIP, object.xOffset, 20)
+		temp0 = object[arrayPos5].shieldType
+		temp0 += 55
+		DrawSpriteScreenFX(temp0, FX_FLIP, object.xOffset, 20)
+
+		object.xOffset += 24
+		DrawSpriteScreenFX(49, FX_FLIP, object.xOffset, 60)
+		if object[arrayPos5].enableS1Spikes == false
+			DrawSpriteScreenFX(61, FX_FLIP, object.xOffset, 60)
+		end if
+		if MR.gameType == GAME_SONIC_1
+			DrawSpriteScreenFX(50, FX_FLIP, object.xOffset, 100)
+			if object[arrayPos5].setting2 == false
+				DrawSpriteScreenFX(62, FX_FLIP, object.xOffset, 100)
+			end if
+			DrawSpriteScreenFX(47, FX_FLIP, object.xOffset, 140)
+			if object[arrayPos5].setting3 == false
+				DrawSpriteScreenFX(59, FX_FLIP, object.xOffset, 140)
+			end if
+		else
+			DrawSpriteScreenFX(49, FX_FLIP, object.xOffset, 100)
+			if object[arrayPos5].setting2 == false
+				DrawSpriteScreenFX(61, FX_FLIP, object.xOffset, 100)
+			end if
+			DrawSpriteScreenFX(50, FX_FLIP, object.xOffset, 140)
+			if object[arrayPos5].setting3 == false
+				DrawSpriteScreenFX(62, FX_FLIP, object.xOffset, 140)
+			end if
+		end if
+		object.xOffset += 48
+		DrawSpriteScreenFX(50, FX_FLIP, object.xOffset, 60)
+		if object[arrayPos5].enableS1Spikes == true
+			DrawSpriteScreenFX(62, FX_FLIP, object.xOffset, 60)
+		end if
+		if MR.gameType == GAME_SONIC_1
+			DrawSpriteScreenFX(49, FX_FLIP, object.xOffset, 100)
+			DrawSpriteScreenFX(48, FX_FLIP, object.xOffset, 140)
+			if object[arrayPos5].setting2 == true
+				DrawSpriteScreenFX(61, FX_FLIP, object.xOffset, 100)
+			end if
+			if object[arrayPos5].setting3 == true
+				DrawSpriteScreenFX(60, FX_FLIP, object.xOffset, 140)
+			end if
+		else
+			DrawSpriteScreenFX(50, FX_FLIP, object.xOffset, 100)
+			DrawSpriteScreenFX(49, FX_FLIP, object.xOffset, 140)
+			if object[arrayPos5].setting2 == true
+				DrawSpriteScreenFX(62, FX_FLIP, object.xOffset, 100)
+			end if
+			if object[arrayPos5].setting3 == true
+				DrawSpriteScreenFX(61, FX_FLIP, object.xOffset, 140)
+			end if
+		end if
+		DrawSpriteScreenFX(0, FX_FLIP, 10, 170)	// Back
+		break
+	case SUBMENU_PLAYERSELECT_ALT
+		EditFrame(107, 0, 0, 52, 12,  1,  44)
+		EditFrame(108, 0, 0, 46, 12,  1,  57)
+		EditFrame(109, 0, 0, 84, 12,  1,  70)
+		EditFrame(119, 0, 0, 52, 12, 54,  44)
+		EditFrame(120, 0, 0, 46, 12, 48,  57)
+		EditFrame(121, 0, 0, 84, 12, 86,  70)
+
+		if Screen.xsize <= 384
+			EditFrame(9,    0, 0, 288,  10,   1, 747)
+			EditFrame(11,   0, 0, 288,  10,   1, 758)
+			EditFrame(10, 288, 0,  10, 228, 233,   0)
+
+			object.xOffset  = screen.xcenter
+			object.xOffset -= 144
+			DrawRect(object.xOffset, 12, 288, 208, 0, 0, 0, 160)
+		else
+			EditFrame(9,    0, 0, 400,  10,   1, 747)
+			EditFrame(11,   0, 0, 400,  10,   1, 758)
+			EditFrame(10, 400, 0,  10, 228, 233,   0)
+
+			object.xOffset  = screen.xcenter
+			object.xOffset -= 201
+			DrawRect(object.xOffset, 12, 400, 208, 0, 0, 0, 160)
+		end if
+		object.inkEffect = 2
+		object.alpha   = 160
+
+		DrawSpriteScreenFX(8, FX_INK, object.xOffset, 2)
+		DrawSpriteScreenFX(9, FX_INK, object.xOffset, 2)
+		DrawSpriteScreenFX(10, FX_INK, object.xOffset, 2)
+		DrawSpriteScreenFX(11, FX_INK, object.xOffset, 220)
+
+		object.scale    = 512
+		object.xOffset  = screen.xcenter
+		EditFrame(123, 0, 0, 130, 12, 132, 538)
+		EditFrame(111, 0, 0, 130, 12, 1, 538)
+		temp0  = screen.xcenter
+		temp0 -= 80
+		DrawSpriteScreenFX(107, FX_SCALE, object.xOffset, 20)
+		DrawSpriteScreenFX(108, FX_SCALE, object.xOffset, 40)
+		DrawSpriteScreenFX(109, FX_SCALE, object.xOffset, 60)
+		DrawSpriteScreenFX(110, FX_SCALE, object.xOffset, 80)
+		DrawSpriteScreenFX(111, FX_SCALE, object.xOffset, 100)
+#platform: USE_ORIGINS
+		if AmyEnabled == true
+			DrawSpriteScreenFX(112, FX_SCALE, object.xOffset, 120)
+			DrawSpriteScreenFX(113, FX_SCALE, object.xOffset, 140)
+		end if
+#endplatform
+		if Stage.playerListPos > 3
+			DrawSpriteScreenFX(95, FX_SCALE, temp0, 30)
+		else
+			temp1  = 92
+			temp1 += stage.playerListPos
+			DrawSpriteScreenFX(temp1, FX_SCALE, temp0, 30)
+		end if
+
+		switch stage.playerListPos
+		case 0
+			DrawSpriteScreenFX(119, FX_SCALE, object.xOffset, 20)
+			DrawSpriteScreenFX(96, FX_FLIP, temp0, 20)
+			break
+		case 1
+			DrawSpriteScreenFX(120, FX_SCALE, object.xOffset, 40)
+			DrawSpriteScreenFX(97, FX_FLIP, temp0, 30)
+			break
+		case 2
+			DrawSpriteScreenFX(121, FX_SCALE, object.xOffset, 60)
+			DrawSpriteScreenFX(98, FX_FLIP, temp0, 20)
+			break
+		case 3
+			DrawSpriteScreenFX(122, FX_SCALE, object.xOffset, 80)
+			temp0 += 17
+			DrawSpriteScreenFX(97, FX_FLIP, temp0, 20)
+			temp0 -= 32
+			DrawSpriteScreenFX(96, FX_FLIP, temp0, 25)
+			break
+		case 4
+			DrawSpriteScreenFX(123, FX_SCALE, object.xOffset, 100)
+			temp0 += 17
+			DrawSpriteScreenFX(97, FX_FLIP, temp0, 20)
+			temp0 -= 36
+			object.direction = 1
+			DrawSpriteScreenFX(98, FX_FLIP, temp0, 24)
+			break
+		case 5
+			DrawSpriteScreenFX(124, FX_SCALE, object.xOffset, 120)
+			DrawSpriteScreenFX(99, FX_FLIP, temp0, 20)
+			break
+		case 6
+			DrawSpriteScreenFX(125, FX_SCALE, object.xOffset, 140)
+			temp0 += 17
+			DrawSpriteScreenFX(97, FX_FLIP, temp0, 20)
+			object.direction = 1
+			temp0 -= 34
+			DrawSpriteScreenFX(99, FX_FLIP, temp0, 20)
+			break
+		end switch
+		object.direction = 0
+		object.xOffset = screen.xcenter
+		DrawSpriteScreenFX(5, FX_FLIP, object.xOffset, 200)
+		object.xOffset += 50
+		DrawSpriteScreenFX(7, FX_FLIP, object.xOffset, 200)
+		object.xOffset += 50
+		DrawSpriteScreenFX(6, FX_FLIP, object.xOffset, 200)
+		DrawSpriteScreenFX(0, FX_FLIP, 10, 170)	// Back
+		break
+	end switch
+end event
+
+event ObjectStartup
+	LoadSpriteSheet("Menu/PlayerSel.gif")
+	SpriteFrame(  0, 0,  48,  48, 195, 229)	//	Back Button 0
+	SpriteFrame(-15, 0,  16,  33,   1, 154)	//	PlayerSel Details left 1
+	SpriteFrame(264, 0,  16,  33,  18, 154)	//	PlayerSel Details right 2
+	SpriteFrame(-15, 0,  16,  33,  35, 154)	//	PlayerSel Details left highlight 3
+	SpriteFrame(264, 0,  16,  33,  52, 154)	//	PlayerSel Details right highlight 4
+	SpriteFrame(  0, 0,  37,  18, 402, 747)	//	Up Arrow 5
+	SpriteFrame(  0, 0,  37,  18, 440, 747)	//	Down Arrow 6
+	SpriteFrame(  0, 0,  34,  18, 478, 747)	//	Select Character 7
+	SpriteFrame(-10, 0,  10, 228, 222,   0)	//	Char Select detail L 8
+	SpriteFrame(  0, 0, 400,  10,   1, 747)	//	Char Select detail U 9
+	SpriteFrame(  0, 0,  10, 228, 233,   0)	//	Char Select detail R 10
+	SpriteFrame(  0, 0, 400,  10,   1, 758)	//	Char Select detail D 11
+	SpriteFrame(-67, 0, 134,  16,   1, 495)	//	C - Extra Char 12
+	SpriteFrame(  0, 0, 139,  12,   1, 357)	//	New Game 13
+	SpriteFrame(  0, 0, 139,  12,   1, 383)	//	No Save 14
+	SpriteFrame(  2, 0, 118,  20,   1, 474)	//	Delete 15
+
+	SpriteFrame(  0, 0,  16,  16, 203,  18)	//	S2 Blank Emerald 16
+	SpriteFrame(  0, 0,  16,  16, 152,   1)	//	S2 Blue Emerald 17
+	SpriteFrame(  0, 0,  16,  16, 169,   1)	//	S2 Purple Emerald 18
+	SpriteFrame(  0, 0,  16,  16, 186,   1)	//	S2 Red Emerald 19
+	SpriteFrame(  0, 0,  16,  16, 203,   1)	//	S2 Pink Emerald 20
+	SpriteFrame(  0, 0,  16,  16, 152,  18)	//	S2 Yellow Emerald 21
+	SpriteFrame(  0, 0,  16,  16, 169,  18)	//	S2 Green Emerald 22
+	SpriteFrame(  0, 0,  16,  16, 186,  18)	//	S2 Grey Emerald 23
+
+	SpriteFrame(  0, 0,  16,  16, 186, 69)	//	S1 Blank Emerald 24
+	SpriteFrame(  0, 0,  16,  16, 152, 35)	//	S1 Blue Emerald 25
+	SpriteFrame(  0, 0,  16,  16, 169, 35)	//	S1 Yellow Emerald 26
+	SpriteFrame(  0, 0,  16,  16, 186, 35)	//	S1 Pink Emerald 27
+	SpriteFrame(  0, 0,  16,  16, 152, 52)	//	S1 Green Emerald 28
+	SpriteFrame(  0, 0,  16,  16, 169, 52)	//	S1 Red Emerald 29
+	SpriteFrame(  0, 0,  16,  16, 186, 52)	//	S1 Gray Emerald 30
+	SpriteFrame(  0, 0,  16,  16, 203, 52)	//	S1 Turquoise Emerald 31
+	SpriteFrame(  0, 0,  16,  16, 203, 35)	//	S1 Purple Emerald 32
+
+	SpriteFrame( 16, 0, 139,  12,   1, 448)	//	Dev Menu 33
+	SpriteFrame( 10, 0, 139,  12,   1, 344)	//	2P Versus 34
+	SpriteFrame(  0, 0, 139,  12,   1, 396)	//	Level Select 35
+	SpriteFrame( -8, 0, 139,  12,   1, 422)	//	Proto Palace 36
+	SpriteFrame( -8, 0, 139,  12,   1, 435)	//	Egg Gaunlet 37
+
+
+	// S1 Options
+	SpriteFrame(-49,  0, 98, 16, 141, 370)	//	Z - Options 38
+	SpriteFrame(  0,  0, 46, 12,  44, 141)	//	"Items" 39
+	SpriteFrame(  0,  0, 80, 12, 141, 305)	//	"S1 Spikes" 40
+	if MR.gameType == GAME_SONIC_1
+		SpriteFrame(  0,  0, 80, 12, 141, 292)	//	"Spindash" 41
+		SpriteFrame(  0,  0, 80, 12, 141, 318)	//	"Emeralds" 42
+		SpriteFrame( -6,  0, 21, 12, 141, 214)	//	S1 button 43
+		SpriteFrame( 24,  0, 21, 12, 141, 227)	//	S2 button 44
+		SpriteFrame( 56,  0, 38, 12, 141, 188)	//	S1 + S3 button 45
+		SpriteFrame(104,  0, 38, 12, 141, 201)	//	S2 + S3 button 46
+	else
+		SpriteFrame(  0,  0, 96, 12, 121, 96)	//	"Super Tails" 41
+		SpriteFrame(  0,  0, 56, 12, 138, 128)	//	"Flight" 42
+		SpriteFrame(-16,  0, 21, 12, 141, 227)	//	S2 button 43
+		SpriteFrame(  7,  0, 38, 12, 141, 201)	//	S2 + S3 button 44
+		SpriteFrame( 48,  0, 42, 12, 103, 162)	//	Random button 45
+		SpriteFrame(93,  0, 56, 12, 146, 162)	//	Random S3 button 46
+	end if
+	SpriteFrame(  0,  0, 21, 12, 141, 240)	//	6 emeralds button 47
+	SpriteFrame(  0,  0, 21, 12, 141, 253)	//	7 emeralds button 48
+	SpriteFrame(  0,  0, 21, 12, 141, 266)	//	off button 49
+	SpriteFrame(  0,  0, 21, 12, 141, 279)	//	on button 50
+	// Highlight
+	SpriteFrame(  0,  0, 46, 12,  91, 141)	//	"Items" 51
+	SpriteFrame(  0,  0, 80, 12, 141, 344)	//	"S1 Spikes" 52
+	if MR.gameType == GAME_SONIC_1
+		SpriteFrame(  0,  0, 80, 12, 141, 331)	//	"Spindash" 53
+		SpriteFrame(  0,  0, 80, 12, 141, 357)	//	"Emeralds" 54
+		SpriteFrame( -6,  0, 21, 12, 163, 214)	//	S1 button 55
+		SpriteFrame( 24,  0, 21, 12, 163, 227)	//	S2 button 56
+		SpriteFrame( 56,  0, 38, 12, 180, 188)	//	S1 + S3 button 57
+		SpriteFrame(104,  0, 38, 12, 180, 201)	//	S2 + S3 button 58
+	else
+		SpriteFrame(  0,  0, 96, 12, 121, 109)	//	"Super Tails" 53
+		SpriteFrame(  0,  0, 56, 12, 138, 141)	//	"Flight" 54
+		SpriteFrame(-16,  0, 21, 12, 163, 227)	//	S2 button 55
+		SpriteFrame(  7,  0, 38, 12, 180, 201)	//	S2 + S3 button 56
+		SpriteFrame( 48,  0, 42, 12, 103, 175)	//	Random button 57
+		SpriteFrame(93,  0, 56, 12, 146, 175)	//	Random S3 button 58
+	end if
+	SpriteFrame(  0,  0, 21, 12, 163, 240)	//	6 emeralds button 59
+	SpriteFrame(  0,  0, 21, 12, 163, 253)	//	7 emeralds button 60
+	SpriteFrame(  0,  0, 21, 12, 163, 266)	//	off button 61
+	SpriteFrame(  0,  0, 21, 12, 163, 279)	//	on button 62
+
+	if MR.gameType == GAME_SONIC_1
+		SpriteFrame(  0,  0, 16, 14, 227, 355)	//	S2 Shield 63
+		SpriteFrame(  0,  0, 16, 14, 227, 325)	//	S3 Shield 64
+		SpriteFrame(  0,  0, 16, 14, 227, 310)	//	Spikes 65
+		SpriteFrame(  0,  0, 16, 14, 227, 340)	//	Spindash 66
+		SpriteFrame(  0,  0, 15, 14, 194, 278)	//	Max emeralds 67
+	else
+		SpriteFrame(  0,  0, 16, 14, 227, 295)	//	Random 63
+		SpriteFrame(  0,  0, 16, 14, 227, 325)	//	S3 Shield 64
+		SpriteFrame(  0,  0, 16, 14, 227, 310)	//	Spikes 65
+		SpriteFrame(  0,  0, 16, 14, 227, 280)	//	Super Tails 66
+		SpriteFrame(  0,  0, 16, 14, 210, 278)	//	Flight ban 67
+	end if
+
+	SpriteFrame(  0, 0, 139,  12,   1, 370)	//	COMPLETE 68
+	if MR.gameType == GAME_SONIC_2
+		SpriteFrame(0, 0, 139, 12,  1, 188) //	EHZ 69
+		SpriteFrame(0, 0, 139, 12,  1, 201) //	CPZ 70
+		SpriteFrame(0, 0, 139, 12,  1, 214) //	ARZ 71
+		SpriteFrame(0, 0, 139, 12,  1, 227) //	CNZ 72
+		SpriteFrame(0, 0, 139, 12,  1, 240) //	HTZ 73
+		SpriteFrame(0, 0, 139, 12,  1, 253) //	MCZ 74
+		SpriteFrame(0, 0, 139, 12,  1, 266) //	OOZ 75
+		SpriteFrame(0, 0, 139, 12,  1, 279) //	MPZ 76
+		SpriteFrame(0, 0, 139, 12,  1, 292) //	SCZ 77
+		SpriteFrame(0, 0, 139, 12,  1, 305) //	WFZ 78
+		SpriteFrame(0, 0, 139, 12,  1, 318) //	DEZ 79
+	else
+		SpriteFrame(0, 0, 139, 12, 373,  1)	//	GHZ 69
+		SpriteFrame(0, 0, 139, 12, 373, 14)	//	MZ 70
+		SpriteFrame(0, 0, 139, 12, 373, 27)	//	SYZ 71
+		SpriteFrame(0, 0, 139, 12, 373, 40)	//	LZ 72
+		SpriteFrame(0, 0, 139, 12, 373, 53)	//	SLZ 73
+		SpriteFrame(0, 0, 139, 12, 373, 66)	//	SBZ 74
+		SpriteFrame(0, 0, 139, 12, 373, 79)	//	Final 75
+		SpriteFrame(0, 0, 139, 12, 373, 92)	//	Special Stage 76
+		SpriteFrame(0, 0,   0,  0,   0,  0)	//	Blank Stage 77
+		SpriteFrame(0, 0,   0,  0,   0,  0)	//	Blank Stage 78
+		SpriteFrame(0, 0,   0,  0,   0,  0)	//	Blank Stage 79
+	end if
+
+	SpriteFrame(0, 0, 139, 12, 1, 461)		//	Unknown 80
+	SpriteFrame(0, 0,  34, 12, 1, 128)		//	Act 81
+	arrayPos0 = 0
+	temp0 = 38
+	// Numbers 82 - 91
+	while arrayPos0 < 10
+		SpriteFrame(0, 0, 9, 12, temp0, 128)
+		temp0 += 10
+		arrayPos0++
+	loop
+
+	SpriteFrame(-64, 0, 128, 128, 244,   0)	//	Sonic Circle 92
+	SpriteFrame(-64, 0, 128, 128, 244, 129)	//	Tails Circle 93
+	SpriteFrame(-64, 0, 128, 128, 244, 258)	//	Knuckles Circle 94
+	SpriteFrame(-64, 0, 128, 128, 373, 129)	//	Default Circle 95
+	SpriteFrame(-36, 0,  73, 124, 142, 387)	//	Sonic Icon 96
+	SpriteFrame(-61, 0, 122, 108, 308, 403)	//	Tails Icon 97
+	SpriteFrame(-45, 4,  91, 124, 216, 387)	//	Knuckles Icon 98
+	SpriteFrame(-36, 0,  80, 123, 431, 388)	//	Amy Icon 99
+	SpriteFrame(-29, 0,  59,  31,   1,  96)	//	Pairing 100
+	SpriteFrame(-29, 0,  59,  31,  61,  96)	//	Pairing HighLight 101
+	// Characters
+	SpriteFrame(-18, -11,  32, 41, 402, 512)	//	Sonic Sprite 102
+	SpriteFrame(-17, -11,  34, 41, 28,   1)	//	Tails Sprite 103
+	SpriteFrame(-15, -11,  30, 41, 63,   1)	//	Knuckles Sprite 104
+	SpriteFrame(-15, -11,  26, 41, 94,   1)	//	Amy Sprite 105
+	SpriteFrame(-15, -11,  30, 41, 94,   1)	//	Unknown Char Sprite 106
+	// Names
+	SpriteFrame(-26,   0,  52, 12,  1,  44)	//	"Sonic" 107
+	SpriteFrame(-23,   0,  46, 12,  1,  57)	//	"Tails" 108
+	SpriteFrame(-42,   0,  84, 12,  1,  70)	//	"Knuckles" 109
+	SpriteFrame(  0,   0, 138, 12,247, 525)	//	"Sonic and Tails" 110
+	SpriteFrame(  0,   0, 170, 12,  1, 512)	//	"Knuckles and Tails" 111
+	SpriteFrame(  0,   0,  36, 12,  1,  83)	//	"Amy" 112
+	SpriteFrame(  0,   0, 122, 12,  1, 525)	//	"Amy and Tails" 113
+	// Highlight
+	SpriteFrame(-18, -11, 32, 41, 435, 512) //	Sonic Sprite 114
+	SpriteFrame(-17, -11, 34, 41, 400, 258) //	Tails Sprite 115
+	SpriteFrame(-15, -11, 30, 41, 435, 258) //	Knuckles Sprite 116
+	SpriteFrame(-15, -11, 26, 41, 466, 258) //	Amy Sprite 117
+	SpriteFrame(-15, -11, 30, 41, 373, 342) //	Unknown Char Sprite 118
+	// Names Highlight
+	SpriteFrame(-26,  0,  52, 12,  54,  44)	//	"Sonic" HighLight 119
+	SpriteFrame(-23,  0,  46, 12,  48,  57)	//	"Tails" HighLight 120
+	SpriteFrame(-42,  0,  84, 12,  86,  70)	//	"Knuckles" HighLight 121
+	SpriteFrame(  0,  0, 138, 12, 263, 538)	//	"Sonic and Tails" Highlight 122
+	SpriteFrame(  0,  0, 170, 12, 172, 512)	//	"Knuckles and Tails" Highlight 123
+	SpriteFrame(  0,  0,  36, 12,  38,  83)	//	"Amy" HighLight 124
+	SpriteFrame(  0,  0, 122, 12, 124, 525)	//	"Amy and Tails" Highlight 125
+	// Delete
+	SpriteFrame(-18, -11, 32, 41, 468, 512)	//	Sonic Sprite 126
+	SpriteFrame(-17, -11, 34, 41, 400, 300) //	Tails Sprite 127
+	SpriteFrame(-15, -11, 30, 41, 435, 300) //	Knuckles Sprite 128
+	SpriteFrame(-15, -11, 26, 41, 466, 300) //	Amy Sprite 129
+	SpriteFrame(-15, -11, 30, 41, 404, 342) //	Unknown Char Sprite 130
+
+	// Locked
+	SpriteFrame(-17, -11, 34, 41, 462, 342)	//	Tails Locked Sprite 131
+	SpriteFrame(-15, -11, 26, 41, 435, 342)	//	Amy Locked Sprite 132
+end event
+
+event RSDKDraw
+	DrawSprite(0)
+end event
+
+event RSDKLoad
+	LoadSpriteSheet("Global/Display.gif")
+	SpriteFrame(-16, -16, 32, 32, 1, 143)
+end event
