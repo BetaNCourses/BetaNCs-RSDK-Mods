@@ -1,7 +1,7 @@
 Changelog:
 	- Most S3K Black has been removed from several sprites
 	- Tweaked some visuals in the "SONIC THE HEDGEHOG" Title Text
-	- CD styled walk for Sonic (Suggested by Sonic De Glitcher)
+	- CD styled walk for Sonic (Suggested by SDG)
 	- Removed Sonic's "flesh shoes"
 	- Added Tails' tails to his balance animation (as well as tweaked it a bit)
 	- Amy's colors have been corrected as well as her super colors (Suggested by Nabbup)
