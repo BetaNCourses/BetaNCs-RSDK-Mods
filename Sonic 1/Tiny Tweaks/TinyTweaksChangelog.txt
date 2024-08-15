@@ -6,11 +6,12 @@ Changelog:
 	- Added Tails' tails to his balance animation (as well as tweaked it a bit)
 	- Amy's colors have been corrected as well as her super colors (Suggested by Nabbup)
 	- Amy's hammer rush animation has been tweaked to be not janky
-	- Amy's hammer rush can be rotated on slopes (She doesn't fully loop-de-loop tho :( )
+	- Amy's hammer rush can go up curved slopes and loops
 	- Amy's hammer spin offset has been fixed
+	- HammerHit.wav and Destory.wav both play when hitting a badnik
 	- The hud display has been changed to be similar to Mania's hud and touched up life names and numbers (Inspired by Keingz's A.I.R. HUD Tweaks)
 	- Touched up Amy's life icon colors
-	- Added Separate Super Music, it's moddable too!
+	- Unique Super Music, provided by S_A3, Artist is unknown
 	- You no longer have to press pause twice to unpause the game (Only if using RSDKv4, It won't work if using RSDKv5U. You can't even pause)
 	- Ovals behind the Score and Bonus tallys have been corrected to be similar to the title card oval colors
 	- "Act" incorrect greys on the title cards have been corrected
@@ -18,7 +19,11 @@ Changelog:
 	- "Goal" blocks in the special stages have been changed to a "!" (Suggested by MattDrawzStuff)
 	- Level Select's Sonic Sound Test icon have been corrected to his Sonic 1 colors
 	- Implemented Sonic Mania menu sound effects (for personal prefrence) 
+
 Stuff taken mostly from Storice's Fixes (but done in my own way)
 	- Restored Sonic's skidding animation from Sonic 1 (it was originally from Sonic CD)
 	- The HUD has been shifted up by 4 pixels
 	- Knuckles uses his signpost sprite from KTEinS2
+	
+	Community Additions:
+	- "Tweak" added in by "Author"
