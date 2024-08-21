@@ -939,8 +939,8 @@ event ObjectStartup
 	SpriteFrame(-47, -8, 23, 16, 344, 174) // 9  - Looking up
 
 	// 10-11 - Sonic Piloting the Tornado Frames
-	SpriteFrame(-50, -8, 24, 16, 256, 157)
-	SpriteFrame(-50, -8, 24, 16, 281, 157)
+	SpriteFrame(-50, -9, 26, 17, 285, 138)
+	SpriteFrame(-50, -9, 26, 17, 285, 138)
 
 	//12-16 - Zoomout Tornado shots, Tails as pilot and no passenger
 	SpriteFrame(-32, -16, 60, 32, 1, 1)

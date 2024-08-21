@@ -25,5 +25,5 @@ Stuff taken mostly from Storice's Fixes (but done in my own way)
 	- The HUD has been shifted up by 4 pixels
 	- Knuckles uses his signpost sprite from KTEinS2
 	
-	Community Additions:
+Community Additions:
 	- "Tweak" added in by "Author"

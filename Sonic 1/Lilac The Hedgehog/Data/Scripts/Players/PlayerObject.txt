@@ -1903,9 +1903,9 @@ public function Player_HandleWalkAnimSpeed
 	end if
 
 	// Do some maths
-	player.animationSpeed *= 60
-	player.animationSpeed /= 0x60000
-	player.animationSpeed += 20
+	player.animationSpeed *= 80
+	player.animationSpeed /= 0x80000
+	player.animationSpeed += 40
 end function
 
 
