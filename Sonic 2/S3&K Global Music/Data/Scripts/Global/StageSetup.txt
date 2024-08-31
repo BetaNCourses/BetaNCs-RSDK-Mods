@@ -392,7 +392,7 @@ end event
 
 event ObjectStartup
 	SetMusicTrack("ActComplete.ogg", TRACK_ACTFINISH, false)
-	SetMusicTrack("Invincibility.ogg", TRACK_INVINCIBLE, 77207)
+	SetMusicTrack("Invincibility.ogg", TRACK_INVINCIBLE, 70880)
 	SetMusicTrack("Continue.ogg", TRACK_CONTINUE, false)
 	SetMusicTrack("Boss.ogg", TRACK_BOSS, 87025)
 	SetMusicTrack("GameOver.ogg", TRACK_GAMEOVER, false)
