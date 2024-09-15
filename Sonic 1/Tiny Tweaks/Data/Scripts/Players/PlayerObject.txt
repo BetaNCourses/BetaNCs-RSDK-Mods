@@ -3790,7 +3790,7 @@ end function
 
 // While the player is charging the spindash
 public function Player_State_Spindash
-platform: USE_STANDALONE
+#platform: USE_STANDALONE
 		player.state = Player_State_Air
 #endplatform
 #platform: USE_ORIGINS
