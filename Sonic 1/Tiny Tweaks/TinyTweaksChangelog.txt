@@ -18,6 +18,6 @@ Changelog:
 	- The HUD has been shifted up by 4 pixels
 	- Knuckles uses his signpost sprite from KTEinS2
 	- Knuckles can charge a spindash whenever he drops from a glide or sliding, reguardless if using the Origins platform
-	- You can spindash from a ledge drop as it no longers cancel it
+	- You can spindash from a ledge drop as it no longers cancel it (Implemented by SDG, thanks!)
 	- When using debug mode in Origins, you can now spawn life monitors. But you can't spawn them in Coins are enabled (this is pretty useless lmao)
 	- The 'Score Total' sfx will play when getting a coin (this is also useless)
