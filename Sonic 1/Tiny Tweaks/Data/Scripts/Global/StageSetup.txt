@@ -24,7 +24,6 @@ private alias 3 : TRACK_CONTINUE
 private alias 4 : TRACK_BOSS
 private alias 5 : TRACK_GAMEOVER
 private alias 6 : TRACK_DROWNING
-private alias 7 : TRACK_SUPER
 
 // Reserved object slots
 private alias 0  : SLOT_PLAYER1
@@ -222,6 +221,7 @@ event ObjectUpdate
 				if game.coinMode == false
 					player.lives++
 				else
+					PlaySfx(SfxName[Score Total], false)
 					CallNativeFunction2(NotifyCallback, NOTIFY_ADD_COIN, 1)
 				end if
 #endplatform
@@ -414,10 +414,12 @@ event ObjectStartup
 	SetMusicTrack("Boss.ogg", TRACK_BOSS, true)
 	SetMusicTrack("GameOver.ogg", TRACK_GAMEOVER, false)
 	SetMusicTrack("Drowning.ogg", TRACK_DROWNING, false)
-	SetMusicTrack("Super.ogg", TRACK_SUPER, true)
 
 	// Setup object range
 	if options.attractMode == false
+#platform: USE_ORIGINS
+		stage.pauseEnabled = true
+#endplatform
 	else
 		// Set Object Range, changes internal bounds to a set value so that demos always looks the same and don't desync
 		SetObjectRange(424)

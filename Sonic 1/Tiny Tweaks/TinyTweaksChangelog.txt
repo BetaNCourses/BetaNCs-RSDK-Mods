@@ -1,29 +1,23 @@
 Changelog:
-	- Most S3K Black has been removed from several sprites
+	- Most S3K greys and greens has been removed from several sprites
+	- Touch controls can be used with the Origins platform
+	- Reguardless of what platform you use, you only need to press the jump button again to transform
 	- Tweaked some visuals in the "SONIC THE HEDGEHOG" Title Text
-	- CD styled walk for Sonic (Suggested by SDG)
+	- Restored the 8 frame jumpball animation for all the characters (except Tails obviously)
 	- Removed Sonic's "flesh shoes"
-	- Added Tails' tails to his balance animation (as well as tweaked it a bit)
-	- Amy's colors have been corrected as well as her super colors (Suggested by Nabbup)
+	- Amy's greys, whites, and skin colors are now consistent (just like Knuckles)
+	- Amy's colors have been corrected as well as her super colors
 	- Amy's hammer rush animation has been tweaked to be not janky
-	- Amy's hammer rush can go up curved slopes and loops
 	- Amy's hammer spin offset has been fixed
 	- HammerHit.wav and Destory.wav both play when hitting a badnik
-	- The hud display has been changed to be similar to Mania's hud and touched up life names and numbers (Inspired by Keingz's A.I.R. HUD Tweaks)
-	- Touched up Amy's life icon colors
-	- Unique Super Music, provided by S_A3, Artist is unknown
-	- You no longer have to press pause twice to unpause the game (Only if using RSDKv4, It won't work if using RSDKv5U. You can't even pause)
-	- Ovals behind the Score and Bonus tallys have been corrected to be similar to the title card oval colors
 	- "Act" incorrect greys on the title cards have been corrected
 	- Tweaked up special stage life icons
-	- "Goal" blocks in the special stages have been changed to a "!" (Suggested by MattDrawzStuff)
-	- Level Select's Sonic Sound Test icon have been corrected to his Sonic 1 colors
-	- Implemented Sonic Mania menu sound effects (for personal prefrence) 
-
-Stuff taken mostly from Storice's Fixes (but done in my own way)
+	- Level Select's Sonic Sound Test icon have been corrected to the Sonic 1 colors
+	- The Drop Dash move is now tied to game.Playmode rather than options.spindash (which means you can drop dash with the spindash disabled)
 	- Restored Sonic's skidding animation from Sonic 1 (it was originally from Sonic CD)
 	- The HUD has been shifted up by 4 pixels
 	- Knuckles uses his signpost sprite from KTEinS2
-	
-Community Additions:
-	- "Tweak" added in by "Author"
+	- Knuckles can charge a spindash whenever he drops from a glide or sliding, reguardless if using the Origins platform
+	- You can spindash from a ledge drop as it no longers cancel it
+	- When using debug mode in Origins, you can now spawn life monitors. But you can't spawn them in Coins are enabled (this is pretty useless lmao)
+	- The 'Score Total' sfx will play when getting a coin (this is also useless)

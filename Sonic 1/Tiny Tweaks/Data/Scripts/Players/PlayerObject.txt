@@ -136,7 +136,6 @@ private alias 3 : TRACK_CONTINUE
 private alias 4 : TRACK_BOSS
 private alias 5 : TRACK_GAMEOVER
 private alias 6 : TRACK_DROWNING
-private alias 7 : TRACK_SUPER
 
 // This isn't a global variable, so let's fake it here - it's an unused (and broken) animation, left over from Sonic Nexus
 private alias 34 : ANI_CORKSCREW_V
@@ -485,10 +484,7 @@ public table Player_KnuxSuperAltPal
 	0x802040, 0xE04060, 0xE060A0
 end table
 
-// Bug Details (yeah we haven't gotten to any actual code yet and there's already an issue):
-// Amy's base palette is completely missing in both of these tables, causing the game to apply the first super palette when the scene loads instead
-// This is what causes Amy's fur to be slightly brighter in-game compared to the spritesheets and global palette
-// Note that if you're looking to fix this, you'll also have to edit the Player_HandleSuperPalette_Amy function to account for the new line
+//BetaNC's Note - I tried my best to fixed the colors lol
 
 public table Player_AmySuperPal
 	0xB44890, 0xFC6CFC, 0xFCB4FC, 0x6C0048, 0x90246C
@@ -885,7 +881,7 @@ public function Player_HandleSuperPalette_Amy
 			Player_superBlendTimer = 5
 			Player_superBlendClr += 5
 			if Player_superBlendClr >= 50
-				Player_superBlendClr = 10
+				Player_superBlendClr = 5
 			end if
 		end if
 	else
@@ -1073,7 +1069,7 @@ public function Player_HandleSuperForm
 			LoadAnimation("Sonic.ani")
 		end if
 
-		if music.currentTrack == TRACK_SUPER
+		if music.currentTrack == TRACK_INVINCIBLE
 			PlayMusic(0)
 		end if
 
@@ -1269,6 +1265,7 @@ public function Player_BadnikBreak
 
 		if temp2 == true
 			PlaySfx(SfxName[HammerHit], false)
+			PlaySfx(SfxName[Destroy], false)
 		else
 			PlaySfx(SfxName[Destroy], false)
 		end if
@@ -1676,8 +1673,6 @@ public function Player_ProcessUpdate
 				PlaySfx(SfxName[Menu Back], false)
 				StopSfx(SfxName[Flying])
 				StopSfx(SfxName[Jump])
-				StopSfx(SfxName[Charge])
-				StopSfx(SfxName[Release])
 				engine.state = 5
 			end if
 
@@ -1686,17 +1681,19 @@ public function Player_ProcessUpdate
 				PlaySfx(SfxName[Menu Back], false)
 				StopSfx(SfxName[Flying])
 				StopSfx(SfxName[Jump])
-				StopSfx(SfxName[Charge])
-				StopSfx(SfxName[Release])
 				engine.state = 5
 			end if
-
+		end if
+#platform: USE_ORIGINS
+			if keyPress[1].start == true
+				engine.state = 5
+			end if
+#endplatform
 		ProcessObjectControl()
 	else
 		// In attract mode
 
 		if credits.screen == false
-#platform: USE_STANDALONE
 			CheckTouchRect(0, 0, screen.xsize, screen.ysize)
 
 			if keyPress[0].start == true
@@ -1714,8 +1711,7 @@ public function Player_ProcessUpdate
 					Player_attractDuration = 1
 				end if
 			end if
-#endplatform
-
+		end if
 #platform: USE_ORIGINS
 			if keyPress[1].start == true
 				if Player_attractDuration > 1
@@ -1723,8 +1719,6 @@ public function Player_ProcessUpdate
 				end if
 			end if
 #endplatform
-		end if
-
 		if player.controlMode == CONTROLMODE_P1
 			Player_attractFrameCount--
 
@@ -2471,7 +2465,7 @@ public function Player_Action_Jump
 	if game.playMode == BOOT_PLAYMODE_CLASSIC
 		temp7 = -1
 	else
-		if options.spindash == false // It's neat they tied the Drop Dash to the Spindash setting, they didn't have much of a reason to do that but they did it anyway
+		if game.playMode == false
 			temp7 = -1
 		else
 			temp7 = 0
@@ -2544,7 +2538,7 @@ public function Player_TryTransform
 		object[arrayPos0].priority = PRIORITY_ACTIVE
 
 		PlaySfx(SfxName[Transform], false)
-		PlayMusic(TRACK_SUPER)
+		PlayMusic(2) // Invincibility music
 		Player_superState = SUPERSTATE_SUPER
 		player[currentPlayer].invincibleTimer = 60
 		player[currentPlayer].blinkTimer = 0
@@ -2703,6 +2697,7 @@ public function Player_Action_DblJumpSonic
 			CallFunction(Player_TryTransform)
 		else
 #endplatform
+	
 			// Check if the player should do arial abilities
 
 			// Can't do anything if invincible
@@ -3795,8 +3790,7 @@ end function
 
 // While the player is charging the spindash
 public function Player_State_Spindash
-	if player.gravity == GRAVITY_AIR
-#platform: USE_STANDALONE
+platform: USE_STANDALONE
 		player.state = Player_State_Air
 #endplatform
 #platform: USE_ORIGINS
@@ -3804,8 +3798,7 @@ public function Player_State_Spindash
 #endplatform
 		player.speed = 0
 	end if
-
-	if player.jumpPress == true
+if player.jumpPress == true
 		// Rev up the spindash
 	
 		if player.abilityTimer < 0x90000
@@ -3821,45 +3814,7 @@ public function Player_State_Spindash
 		temp0 >>= 5
 		player.abilityTimer -= temp0
 	end if
-
-#platform: USE_ORIGINS
-	temp1 = player.down
-	CheckEqual(player.releasingDropDash, false)
-	temp2 = checkResult
-	CallFunction(Player_GetDropDashCharge)
-	CheckGreater(temp7, 19)
-	temp2 &= checkResult
-	
-	if temp2 == true
-		temp7 = -1
-		CallFunction(Player_SetDropDashCharge)
-		Sin256(temp0, player.angle)
-		
-		if player.direction == FACING_RIGHT
-			if temp0 >= 0
-				temp0 <<= 12
-			else
-				temp0 <<= 11
-			end if
-		else
-			if temp0 >= 0
-				temp0 <<= 11
-			else
-				temp0 <<= 12
-			end if
-			FlipSign(temp0)
-		end if
-		
-		player.abilityTimer = temp0
-		temp1 = false
-	end if
-	
-	if temp1 == false
-#endplatform
-
-#platform: USE_STANDALONE
-	if player.down == false
-#endplatform
+if player.down == false
 		// Release the spindash!
 
 		player.timer = 0
@@ -4515,8 +4470,6 @@ end function
 public function Player_State_GlideSlide
 	if player.gravity == GRAVITY_GROUND
 		if player.speed == 0
-#platform: USE_ORIGINS
-			// Origins Plus added performing actions out of this state like in S3&K, neat!
 			if player.jumpPress == true
 				if player.down == true
 					CallFunction(player.actionSpindash)
@@ -4524,7 +4477,6 @@ public function Player_State_GlideSlide
 					CallFunction(Player_Action_Jump)
 				end if
 			else
-#endplatform
 				player.scrollTracking = false
 				player.frame = 1
 				if player.timer < 16
