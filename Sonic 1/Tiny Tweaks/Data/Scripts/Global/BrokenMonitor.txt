@@ -430,39 +430,39 @@ event ObjectStartup
 	SpriteFrame(-16, 0, 32, 16, 51, 166)
 	
 	// Icons
-	SpriteFrame(-8, -9, 16, 14, 51, 16) // 1 - MONITOR_RINGS
-	SpriteFrame(-8, -9, 16, 14, 68, 16) // 2 - MONITOR_SHIELD_BLUE
-	SpriteFrame(-8, -9, 16, 14, 51, 31) // 3 - MONITOR_INVINCIBILITY
-	SpriteFrame(-8, -9, 16, 14, 68, 31) // 4 - MONITOR_SPEEDSHOES
+	SpriteFrame(-8, -8, 16, 16, 51, 15) // 1 - MONITOR_RINGS
+	SpriteFrame(-8, -8, 16, 16, 68, 15) // 2 - MONITOR_SHIELD_BLUE
+	SpriteFrame(-8, -8, 16, 16, 51, 30) // 3 - MONITOR_INVINCIBILITY
+	SpriteFrame(-8, -8, 16, 16, 68, 30) // 4 - MONITOR_SPEEDSHOES
 #platform: USE_ORIGINS
 	if game.coinMode == false
 		if stage.playerListPos == PLAYER_AMY
-			SpriteFrame(-8, -9, 16, 14, 166, 118) // 5 - MONITOR_1UP_SONIC, except it's actually Amy
+			SpriteFrame(-8, -8, 16, 16, 166, 117) // 5 - MONITOR_1UP_SONIC, except it's actually Amy
 		else
-			SpriteFrame(-8, -9, 16, 14, 51, 46) // 5 - MONITOR_1UP_SONIC, actually Sonic this time
+			SpriteFrame(-8, -8, 16, 16, 51, 45) // 5 - MONITOR_1UP_SONIC, actually Sonic this time
 		end if
 #endplatform
 #platform: USE_STANDALONE
-		SpriteFrame(-8, -9, 16, 14, 51, 46) // 5 - MONITOR_1UP_SONIC
+		SpriteFrame(-8, -8, 16, 14, 51, 45) // 5 - MONITOR_1UP_SONIC
 #endplatform
-		SpriteFrame(-8, -9, 16, 14, 68, 46) // 6 - MONITOR_1UP_TAILS
-		SpriteFrame(-8, -9, 16, 14, 51, 61) // 7 - MONITOR_1UP_KNUX
+		SpriteFrame(-8, -8, 16, 16, 68, 45) // 6 - MONITOR_1UP_TAILS
+		SpriteFrame(-8, -8, 16, 16, 51, 60) // 7 - MONITOR_1UP_KNUX
 #platform: USE_ORIGINS
 	else
-		SpriteFrame(-8, -9, 16, 14, 35, 100) // 5 - MONITOR_1UP_SONIC (Coin)
-		SpriteFrame(-8, -9, 16, 14, 35, 100) // 6 - MONITOR_1UP_TAILS (Coin.. again)
-		SpriteFrame(-8, -9, 16, 14, 35, 100) // 7 - MONITOR_1UP_KNUX (Coin :D)
+		SpriteFrame(-8, -8, 16, 16, 35, 99) // 5 - MONITOR_1UP_SONIC (Coin)
+		SpriteFrame(-8, -8, 16, 16, 35, 99) // 6 - MONITOR_1UP_TAILS (Coin.. again)
+		SpriteFrame(-8, -8, 16, 16, 35, 99) // 7 - MONITOR_1UP_KNUX (Coin :D)
 	end if
 #endplatform
-	SpriteFrame(-8, -9, 16, 14, 68, 61) // 8 - MONITOR_SUPER
-	SpriteFrame(-8, -9, 16, 14, 51, 91) // 9 - MONITOR_SHIELD_BUBBLE
-	SpriteFrame(-8, -9, 16, 14, 68, 76) // 10 - MONITOR_SHIELD_FIRE
-	SpriteFrame(-8, -9, 16, 14, 51, 76) // 11 - MONITOR_SHIELD_LIGHTNING
-	SpriteFrame(-8, -9, 16, 14, 68, 91) // 12 - MONITOR_EGGMAN
-	SpriteFrame(-8, -9, 16, 14, 18, 100) // 13 - MONITOR_SHIELD_GOGGLES
-	SpriteFrame(-8, -9, 16, 14, 117, 26) // 14 - MONITOR_DEBUG_SPIKES
-	SpriteFrame(-8, -9, 16, 14, 117, 41) // 15 - MONITOR_DEBUG_SHIELD
-	SpriteFrame(-8, -9, 16, 14, 117, 56) // 16 - MONITOR_DEBUG_EMERALDS
+	SpriteFrame(-8, -8, 16, 16, 68, 60) // 8 - MONITOR_SUPER
+	SpriteFrame(-8, -8, 16, 16, 51, 90) // 9 - MONITOR_SHIELD_BUBBLE
+	SpriteFrame(-8, -8, 16, 16, 68, 75) // 10 - MONITOR_SHIELD_FIRE
+	SpriteFrame(-8, -8, 16, 16, 51, 75) // 11 - MONITOR_SHIELD_LIGHTNING
+	SpriteFrame(-8, -8, 16, 16, 68, 90) // 12 - MONITOR_EGGMAN
+	SpriteFrame(-8, -8, 16, 16, 18, 99) // 13 - MONITOR_SHIELD_GOGGLES
+	SpriteFrame(-8, -8, 16, 16, 117, 25) // 14 - MONITOR_DEBUG_SPIKES
+	SpriteFrame(-8, -8, 16, 16, 117, 40) // 15 - MONITOR_DEBUG_SHIELD
+	SpriteFrame(-8, -8, 16, 16, 117, 55) // 16 - MONITOR_DEBUG_EMERALDS
 	
 	BrokenMonitor_ResetDrownMusic = BrokenMonitor_Blank
 end event

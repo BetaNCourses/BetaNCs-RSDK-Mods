@@ -3796,13 +3796,65 @@ end function
 
 // While the player is charging the spindash
 public function Player_State_Spindash
-	player.speed = 0
-	player.xvel = 0
 	if player.gravity == GRAVITY_AIR
 		if player[currentPlayer].disableGravity == false
 			player.yvel += player.gravityStrength
 		end if
+
+	// Update air control
+
+	// Moving left?
+	temp0 = player.topSpeed
+	FlipSign(temp0)
+	if player.speed > temp0
+		if player.left == true
+			// Player hasn't reached the speed cap yet, allow them to continue accelerating
+			player.speed -= player.airAcceleration
+			player.direction = FACING_LEFT
+		end if
+	else
+		// Player has hit speed cap, don't allow them to accelerate further
+		if player.left == true
+			player.direction = FACING_LEFT
+		end if
 	end if
+
+	// Same as above but for moving right
+	if player.speed < player.topSpeed
+		// Player hasn't hit speed cap yet, allow them to get faster
+		if player.right == true
+			player.speed += player.airAcceleration
+			player.direction = FACING_RIGHT
+		end if
+	else
+		// Player has reached speed cap, stop speeding them up
+		if player.right == true
+			player.direction = FACING_RIGHT
+		end if
+	end if
+
+	// Limit player speed if air speed cap is turned on
+	if options.airSpeedCap == true
+		// Player is trying to left, use negative version of speed cap
+		if player.left == true
+			temp0 = player.topSpeed
+			FlipSign(temp0)
+			if player.speed < temp0
+				player.speed = temp0
+			end if
+		end if
+
+		// Player is trying to go right, use normal version of speed cap
+		if player.right == true
+			if player.speed > player.topSpeed
+				player.speed = player.topSpeed
+			end if
+		end if
+	end if
+	object.xpos += object.speed
+	else
+	player.speed = 0
+	player.xvel = 0
 	if player.jumpPress == true
 		// Rev up the spindash
 	
@@ -3890,6 +3942,7 @@ public function Player_State_Spindash
 		PlaySfx(SfxName[Release], false)
 
 		CallFunction(Player_HandleOnGround)
+	end if
 	end if
 end function
 

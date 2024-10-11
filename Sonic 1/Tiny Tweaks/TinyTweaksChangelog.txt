@@ -3,21 +3,24 @@ Changelog:
 	- Touch controls can be used with the Origins platform
 	- Reguardless of what platform you use, you only need to press the jump button again to transform
 	- Tweaked some visuals in the "SONIC THE HEDGEHOG" Title Text
-	- Restored the 8 frame jumpball animation for all the characters (except Tails obviously)
+	- Restored the 8 frame jumpball animation for all the characters (except Tails for obvious reasons)
+	- Restored Sonic's skidding animation from Sonic 1 (it was originally from Sonic CD)
 	- Removed Sonic's "flesh shoes"
+	- Knuckles uses his signpost sprite from KTEinS2
+	- Knuckles can charge a spindash whenever he drops from a glide or sliding, reguardless if using the Origins platform
 	- Amy's greys, whites, and skin colors are now consistent (just like Knuckles)
 	- Amy's colors have been corrected as well as her super colors
 	- Amy's hammer rush animation has been tweaked to be not janky
 	- Amy's hammer spin offset has been fixed
-	- HammerHit.wav and Destory.wav both play when hitting a badnik
+	- Amy should still be using her hammer spin with bumping in Bumpers, however her hammer rush still gets cancelled and you can't charge one
+	- HammerHit.wav and Destory.wav both play when hitting a badnik as Amy with her hammer abilities
 	- "Act" incorrect greys on the title cards have been corrected
 	- Tweaked up special stage life icons
 	- Level Select's Sonic Sound Test icon have been corrected to the Sonic 1 colors
-	- The Drop Dash move is now tied to game.Playmode rather than options.spindash (which means you can drop dash with the spindash disabled)
-	- Restored Sonic's skidding animation from Sonic 1 (it was originally from Sonic CD)
 	- The HUD has been shifted up by 4 pixels
-	- Knuckles uses his signpost sprite from KTEinS2
-	- Knuckles can charge a spindash whenever he drops from a glide or sliding, reguardless if using the Origins platform
+	- The Drop Dash move is now tied to game.Playmode rather than options.spindash (which means you can drop dash with the spindash disabled)
 	- You can spindash from a ledge drop as it no longers cancel it (Implemented by SDG, thanks!)
+	- The coin monitor icon is the same style as the coin life icon
+	- The monitor icons will have the black bars like in the original
 	- When using debug mode in Origins, you can now spawn life monitors. But you can't spawn them in Coins are enabled (this is pretty useless lmao)
 	- The 'Score Total' sfx will play when getting a coin (this is also useless)
